@@ -70,13 +70,21 @@ const data = {
   ],
 };
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar({
+  activePage,
+  onNavItemClick,
+  ...props
+}: {
+  activePage: string;
+  onNavItemClick: (url: string) => void;
+}) {
   const router = useRouter();
   const pathname = usePathname();
 
   // Handle navigation & auto-active
   const handleNavClick = (url: string) => {
     router.push(url);
+    onNavItemClick(url)
   };
 
   return (
@@ -102,7 +110,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent>
         <NavMain
           items={data.navMain}
-          pathname={pathname}
+          currentPath={pathname}
           onNavClick={handleNavClick}
         />
       </SidebarContent>

@@ -24,11 +24,13 @@ import {
 
 interface NavMainProps {
   items: {
-    title: string;
-    url?: string;
-    icon?: any;
-    subItems?: { title: string; url: string }[];
-  }[];
+    title: string
+    icon: React.ElementType
+    url?: string
+    subItems?: { title: string; url: string }[]
+  }[]
+  currentPath: string
+  onNavClick: (url: string) => void
 }
 
 export function NavMain({ items }: NavMainProps) {

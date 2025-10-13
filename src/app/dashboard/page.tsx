@@ -39,8 +39,7 @@ export default function Dashboard() {
         } as React.CSSProperties
       }
     >
-      <AppSidebar 
-        variant="inset" 
+      <AppSidebar
         activePage={activePage} 
         onNavItemClick={setActivePage}
       />

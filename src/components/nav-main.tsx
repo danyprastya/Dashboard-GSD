@@ -1,91 +1,129 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import React from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { type Icon } from "@tabler/icons-react";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion"; // 1. Impor Accordion
+import { useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-// 2. Perbarui tipe data untuk mendukung sub-item
-interface NavItem {
-  title: string;
-  icon?: Icon;
-  subItems: {
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import {
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
+} from "@/components/ui/sidebar";
+
+interface NavMainProps {
+  items: {
     title: string;
-    url: string;
+    url?: string;
+    icon?: any;
+    subItems?: { title: string; url: string }[];
   }[];
 }
 
-interface NavMainProps {
-  items: NavItem[];
-}
-
 export function NavMain({ items }: NavMainProps) {
+  const [openMenu, setOpenMenu] = useState<string | null>(null);
   const pathname = usePathname();
+  const router = useRouter();
+
+  const handleNavClick = (url: string) => {
+    router.push(url);
+  };
 
   return (
-    // 3. Gunakan Accordion sebagai kontainer utama
-    <Accordion
-      type="multiple"
-      className="w-full"
-      // Otomatis membuka menu utama yang relevan dengan URL saat ini
-      defaultValue={items
-        .filter((item) =>
-          item.subItems.some((sub) => pathname.startsWith(sub.url))
-        )
-        .map((item) => item.title)}
-    >
-      {items.map((item) => {
-        const Icon = item.icon;
-        // Cek apakah salah satu sub-item dari menu utama ini sedang aktif
-        const isParentActive = item.subItems.some((sub) =>
-          pathname.startsWith(sub.url)
-        );
+    <SidebarGroup>
+      <SidebarGroupLabel>Daftar Area</SidebarGroupLabel>
+      <SidebarMenu>
+        {items.map((item) => {
+          const isParentActive =
+            pathname === item.url ||
+            item.subItems?.some((sub) => pathname === sub.url);
 
-        return (
-          <AccordionItem
-            value={item.title}
-            key={item.title}
-            className="border-b-0"
-          >
-            <AccordionTrigger
-              className={cn(
-                "py-2 px-3 text-sm font-medium text-muted-foreground hover:bg-muted hover:no-underline rounded-md",
-                isParentActive && "bg-muted text-foreground" // Highlight menu utama jika aktif
-              )}
+          const Icon = item.icon;
+
+          // jika tidak punya submenu → tampilkan tombol langsung
+          if (!item.subItems) {
+            return (
+              <SidebarMenuItem key={item.title}>
+                <SidebarMenuButton
+                  onClick={() => handleNavClick(item.url!)}
+                  tooltip={item.title}
+                  className={cn(
+                    "transition-colors",
+                    isParentActive &&
+                      "bg-primary/10 text-primary hover:bg-primary/20"
+                  )}
+                >
+                  {Icon && <Icon className="h-5 w-5" />}
+                  <span>{item.title}</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            );
+          }
+
+          // jika punya submenu → gunakan Collapsible
+          return (
+            <Collapsible
+              key={item.title}
+              asChild
+              open={openMenu === item.title}
+              onOpenChange={() =>
+                setOpenMenu(openMenu === item.title ? null : item.title)
+              }
+              className="group/collapsible"
             >
-              <div className="flex items-center gap-3">
-                {Icon && <Icon className="h-4 w-4" />}
-                <span>{item.title}</span>
-              </div>
-            </AccordionTrigger>
-            <AccordionContent className="pl-8 pt-2 flex flex-col gap-1 space-y-1">
-              {item.subItems.map((subItem) => {
-                const isSubItemActive = pathname === subItem.url;
-                return (
-                    <Link
-                      key={subItem.url}
-                      href={subItem.url}
-                      className={cn(
-                        "py-1.5 px-3 text-sm text-muted-foreground hover:text-foreground",
-                        isSubItemActive &&
-                          "bg-primary text-primary-foreground hover:text-primary-foreground" // Highlight sub-menu jika aktif
-                      )}
-                    >
-                      {subItem.title}
-                    </Link>
-                );
-              })}
-            </AccordionContent>
-          </AccordionItem>
-        );
-      })}
-    </Accordion>
+              <SidebarMenuItem>
+                <CollapsibleTrigger asChild>
+                  <SidebarMenuButton
+                    tooltip={item.title}
+                    className={cn(
+                      "transition-colors",
+                      isParentActive &&
+                        "bg-primary/10 text-primary hover:bg-primary/20"
+                    )}
+                  >
+                    {Icon && <Icon className="h-5 w-5" />}
+                    <span>{item.title}</span>
+                    <ChevronRight className="ml-auto h-4 w-4 transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                  </SidebarMenuButton>
+                </CollapsibleTrigger>
+                <CollapsibleContent>
+                  <SidebarMenuSub>
+                    {item.subItems.map((sub) => {
+                      const isSubActive = pathname === sub.url;
+                      return (
+                        <SidebarMenuSubItem key={sub.title}>
+                          <SidebarMenuSubButton
+                            asChild
+                            className={cn(
+                              isSubActive &&
+                                "bg-primary/10 text-primary hover:bg-primary/20"
+                            )}
+                          >
+                            <button onClick={() => handleNavClick(sub.url)}>
+                              <span>{sub.title}</span>
+                            </button>
+                          </SidebarMenuSubButton>
+                        </SidebarMenuSubItem>
+                      );
+                    })}
+                  </SidebarMenuSub>
+                </CollapsibleContent>
+              </SidebarMenuItem>
+            </Collapsible>
+          );
+        })}
+      </SidebarMenu>
+    </SidebarGroup>
   );
 }

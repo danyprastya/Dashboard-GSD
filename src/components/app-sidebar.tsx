@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useRouter, usePathname } from "next/navigation";
 import {
   IconInnerShadowTop,
   IconBuilding,
@@ -9,7 +10,6 @@ import {
   IconBuildingStore,
 } from "@tabler/icons-react";
 
-import { NavMain } from "@/components/nav-main";
 import { NavUser } from "@/components/nav-user";
 import {
   Sidebar,
@@ -21,6 +21,8 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 
+import { NavMain } from "@/components/nav-main";
+
 const data = {
   user: {
     name: "shadcn",
@@ -29,10 +31,15 @@ const data = {
   },
   navMain: [
     {
+      title: "Dashboard",
+      icon: IconInnerShadowTop,
+      url: "/dashboard",
+    },
+    {
       title: "Bandung",
       icon: IconBuilding,
       subItems: [
-        { title: "Detail Gedung", url: "/bandung/detail" },
+        { title: "Detail Gedung", url: "/dashboard/table/bandung" },
         { title: "Gedung Rusak", url: "/bandung/rusak" },
       ],
     },
@@ -40,7 +47,7 @@ const data = {
       title: "Kawasan Corpu",
       icon: IconBuildingCommunity,
       subItems: [
-        { title: "Detail Gedung", url: "/corpu/detail" },
+        { title: "Detail Gedung", url: "/dashboard/table/kawasan-corpu" },
         { title: "Gedung Rusak", url: "/corpu/rusak" },
       ],
     },
@@ -48,7 +55,7 @@ const data = {
       title: "Priangan Timur",
       icon: IconBuildingFactory,
       subItems: [
-        { title: "Detail Gedung", url: "/priangan-timur/detail" },
+        { title: "Detail Gedung", url: "/dashboard/table/priangan-timur" },
         { title: "Gedung Rusak", url: "/priangan-timur/rusak" },
       ],
     },
@@ -56,25 +63,25 @@ const data = {
       title: "Priangan Barat",
       icon: IconBuildingStore,
       subItems: [
-        { title: "Detail Gedung", url: "/priangan-barat/detail" },
+        { title: "Detail Gedung", url: "/dashboard/table/priangan-barat" },
         { title: "Gedung Rusak", url: "/priangan-barat/rusak" },
       ],
     },
   ],
 };
 
-interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
-  onNavItemClick: (title: string) => void;
-  activePage: string;
-}
+export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const router = useRouter();
+  const pathname = usePathname();
 
-export function AppSidebar({
-  onNavItemClick,
-  activePage,
-  ...props
-}: AppSidebarProps) {
+  // Handle navigation & auto-active
+  const handleNavClick = (url: string) => {
+    router.push(url);
+  };
+
   return (
     <Sidebar collapsible="offcanvas" {...props}>
+      {/* Header */}
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -82,21 +89,25 @@ export function AppSidebar({
               asChild
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
-              <a href="#">
-                <IconInnerShadowTop className="!size-5" />
+              <a href="#" className="flex items-center gap-2">
+                <IconInnerShadowTop className="!size-5 text-primary" />
                 <span className="text-base font-semibold">DiGI SLAM</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
+
+      {/* Content */}
       <SidebarContent>
         <NavMain
           items={data.navMain}
-          activePage={activePage}
-          onNavItemClick={onNavItemClick}
+          pathname={pathname}
+          onNavClick={handleNavClick}
         />
       </SidebarContent>
+
+      {/* Footer */}
       <SidebarFooter>
         <NavUser user={data.user} />
       </SidebarFooter>

@@ -29,8 +29,16 @@ export default function LoginPage() {
       return
     }
 
-    // Simpan user ke localStorage
+// Simpan user ke localStorage
     localStorage.setItem('user', JSON.stringify(data))
+
+    // Simpan juga status login ke cookie
+
+    // document.cookie = `isLoggedIn=true; path=/; max-age=86400; SameSite=None; Secure`
+    // document.cookie = `userRole=${data.ROLE}; path=/; max-age=86400; SameSite=None; Secure`
+
+    document.cookie = `isLoggedIn=true; path=/; max-age=86400; SameSite=Lax`
+    document.cookie = `userRole=${data.ROLE}; path=/; max-age=86400; SameSite=Lax`
     setStatus('Login berhasil!')
 
     // Cek role dan arahkan ke halaman sesuai

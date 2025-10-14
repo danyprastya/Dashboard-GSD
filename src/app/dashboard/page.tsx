@@ -1,5 +1,5 @@
 "use client";
-
+import { useEffect } from "react"
 import React, { useState } from "react";
 import { AppSidebar } from "@/components/app-sidebar";
 import { ChartAreaInteractive } from "@/components/chart-area-interactive";
@@ -10,12 +10,38 @@ import {
   SidebarInset,
   SidebarProvider,
 } from "@/components/ui/sidebar";
-
+import { useRouter } from "next/navigation"
 import data from "./data.json";
 
 export default function Dashboard() {
   // 1. Buat state untuk melacak halaman yang aktif
   const [activePage, setActivePage] = useState("Dashboard"); // Default ke 'Dashboard'
+  const router = useRouter()
+    // useEffect(() => {
+    //   const loggedIn = document.cookie.includes("isLoggedIn=true")
+    //   if (!loggedIn) {
+    //     router.push("/")
+    //   }
+    // }, [])
+
+    useEffect(() => {
+    const roleMatch = document.cookie.match(/userRole=([^;]+)/)
+    const role = roleMatch ? roleMatch[1] : ''
+    if (role !== 'admin') router.push('/')
+  }, [])
+
+  
+  // Fungsi untuk logout
+  const handleLogout = () => {
+    // Hapus data session user
+    localStorage.removeItem("user")
+    document.cookie = "isLoggedIn=; path=/; max-age=0"
+    document.cookie = "userRole=; path=/; max-age=0"
+
+    // Arahkan ke halaman login
+    router.push("/")
+  }
+
 
   return (
     <SidebarProvider
@@ -49,6 +75,12 @@ export default function Dashboard() {
           </div>
         </div>
       </SidebarInset>
+      <button
+        onClick={handleLogout}
+        className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition"
+      >
+        Logout
+      </button>
     </SidebarProvider>
   );
 }

@@ -4,6 +4,7 @@
 /node_modules
 /crawler/node_modules
 /output
+/playwright-user-data
 /.pnp
 .pnp.*
 .yarn/*

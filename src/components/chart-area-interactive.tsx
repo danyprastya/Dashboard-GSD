@@ -45,6 +45,7 @@ interface MonthData {
 interface ChartBarInteractiveProps {
   data: MonthData[];
   year: number;
+  area: string;
 }
 
 const chartConfig = {

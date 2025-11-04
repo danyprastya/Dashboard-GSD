@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import * as React from "react";
@@ -70,21 +71,26 @@ const data = {
   ],
 };
 
+interface AppSidebarProps {
+  activePage?: string;
+  onNavItemClick?: (url: string) => void;
+  [key: string]: any;
+}
+
 export function AppSidebar({
   activePage,
   onNavItemClick,
   ...props
-}: {
-  activePage: string;
-  onNavItemClick: (url: string) => void;
-}) {
+}: AppSidebarProps) {
   const router = useRouter();
   const pathname = usePathname();
 
   // Handle navigation & auto-active
   const handleNavClick = (url: string) => {
     router.push(url);
-    onNavItemClick(url)
+    if (onNavItemClick) {
+      onNavItemClick(url);
+    }
   };
 
   return (

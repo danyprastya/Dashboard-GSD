@@ -1,0 +1,20 @@
+{
+  "name": "appsheet-crawler",
+  "version": "1.0.0",
+  "description": "Crawler for AppSheet DiGI SLAM",
+  "main": "appsheet-crawler.js",
+  "scripts": {
+    "crawl": "node appsheet-crawler.js",
+    "crawl:area-a": "TARGET_AREA=A node appsheet-crawler.js",
+    "crawl:area-b": "TARGET_AREA=B node appsheet-crawler.js",
+    "crawl:area-c": "TARGET_AREA=C node appsheet-crawler.js",
+    "crawl:area-d": "TARGET_AREA=D node appsheet-crawler.js"
+  },
+  "dependencies": {
+    "playwright": "^1.40.0"
+  },
+  "devDependencies": {},
+  "keywords": ["crawler", "appsheet", "playwright"],
+  "author": "",
+  "license": "ISC"
+}

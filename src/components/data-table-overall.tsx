@@ -30,6 +30,7 @@ interface MonthData {
 }
 
 interface YearData {
+  area: string;
   tahun: number;
   data: MonthData[];
 }
@@ -37,6 +38,7 @@ interface YearData {
 interface DataTableOverallProps {
   data: YearData[];
   selectedYear: number;
+  selectedArea: string;
 }
 
 export function DataTableOverall({ data, selectedYear }: DataTableOverallProps) {

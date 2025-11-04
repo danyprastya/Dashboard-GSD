@@ -1,5 +1,6 @@
 [
   {
+    "area": "Bandung",
     "tahun": 2023,
     "data": [
       { "bulan": "Januari", "checklist": 160, "open": 0, "submitted": 0, "approved": 160, "foto": 160, "prestasi": 210 },
@@ -8,15 +9,16 @@
       { "bulan": "April", "checklist": 166, "open": 0, "submitted": 0, "approved": 166, "foto": 166, "prestasi": 99 },
       { "bulan": "Mei", "checklist": 167, "open": 0, "submitted": 0, "approved": 167, "foto": 167, "prestasi": 102 },
       { "bulan": "Juni", "checklist": 168, "open": 0, "submitted": 0, "approved": 168, "foto": 168, "prestasi": 100 },
-      { "bulan": "Juli", "checklist": 5,   "open": 5, "submitted": 0, "approved": 0,   "foto": 0,   "prestasi": 2   },
-      { "bulan": "Agustus", "checklist": 0,   "open": 0, "submitted": 0, "approved": 0,   "foto": 0,   "prestasi": 0   },
-      { "bulan": "September", "checklist": 0,   "open": 0, "submitted": 0, "approved": 0,   "foto": 0,   "prestasi": 0   },
-      { "bulan": "Oktober", "checklist": 0,   "open": 0, "submitted": 0, "approved": 0,   "foto": 0,   "prestasi": 0   },
-      { "bulan": "November", "checklist": 0,   "open": 0, "submitted": 0, "approved": 0,   "foto": 0,   "prestasi": 0   },
-      { "bulan": "Desember", "checklist": 0,   "open": 0, "submitted": 0, "approved": 0,   "foto": 0,   "prestasi": 0   }
+      { "bulan": "Juli", "checklist": 5, "open": 5, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 2 },
+      { "bulan": "Agustus", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 },
+      { "bulan": "September", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 },
+      { "bulan": "Oktober", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 },
+      { "bulan": "November", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 },
+      { "bulan": "Desember", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 }
     ]
   },
   {
+    "area": "Bandung",
     "tahun": 2024,
     "data": [
       { "bulan": "Januari", "checklist": 165, "open": 0, "submitted": 0, "approved": 165, "foto": 165, "prestasi": 227 },
@@ -25,15 +27,16 @@
       { "bulan": "April", "checklist": 165, "open": 0, "submitted": 0, "approved": 165, "foto": 165, "prestasi": 99 },
       { "bulan": "Mei", "checklist": 165, "open": 0, "submitted": 0, "approved": 165, "foto": 165, "prestasi": 99 },
       { "bulan": "Juni", "checklist": 165, "open": 0, "submitted": 0, "approved": 165, "foto": 165, "prestasi": 100 },
-      { "bulan": "Juli", "checklist": 5,   "open": 5, "submitted": 0, "approved": 0,   "foto": 0,   "prestasi": 2   },
-      { "bulan": "Agustus", "checklist": 0,   "open": 0, "submitted": 0, "approved": 0,   "foto": 0,   "prestasi": 0   },
-      { "bulan": "September", "checklist": 0,   "open": 0, "submitted": 0, "approved": 0,   "foto": 0,   "prestasi": 0   },
-      { "bulan": "Oktober", "checklist": 0,   "open": 0, "submitted": 0, "approved": 0,   "foto": 0,   "prestasi": 0   },
-      { "bulan": "November", "checklist": 0,   "open": 0, "submitted": 0, "approved": 0,   "foto": 0,   "prestasi": 0   },
-      { "bulan": "Desember", "checklist": 0,   "open": 0, "submitted": 0, "approved": 0,   "foto": 0,   "prestasi": 0   }
+      { "bulan": "Juli", "checklist": 5, "open": 5, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 2 },
+      { "bulan": "Agustus", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 },
+      { "bulan": "September", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 },
+      { "bulan": "Oktober", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 },
+      { "bulan": "November", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 },
+      { "bulan": "Desember", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 }
     ]
   },
   {
+    "area": "Bandung",
     "tahun": 2025,
     "data": [
       { "bulan": "Januari", "checklist": 180, "open": 0, "submitted": 0, "approved": 180, "foto": 180, "prestasi": 200 },
@@ -42,12 +45,174 @@
       { "bulan": "April", "checklist": 158, "open": 0, "submitted": 0, "approved": 158, "foto": 158, "prestasi": 130 },
       { "bulan": "Mei", "checklist": 159, "open": 0, "submitted": 0, "approved": 159, "foto": 159, "prestasi": 110 },
       { "bulan": "Juni", "checklist": 160, "open": 0, "submitted": 0, "approved": 160, "foto": 160, "prestasi": 105 },
-      { "bulan": "Juli", "checklist": 15,  "open": 15,"submitted": 0, "approved": 0,   "foto": 0,   "prestasi": 3   },
-      { "bulan": "Agustus", "checklist": 0,   "open": 0, "submitted": 0, "approved": 0,   "foto": 0,   "prestasi": 0   },
-      { "bulan": "September", "checklist": 0,   "open": 0, "submitted": 0, "approved": 0,   "foto": 0,   "prestasi": 0   },
-      { "bulan": "Oktober", "checklist": 0,   "open": 0, "submitted": 0, "approved": 0,   "foto": 0,   "prestasi": 0   },
-      { "bulan": "November", "checklist": 0,   "open": 0, "submitted": 0, "approved": 0,   "foto": 0,   "prestasi": 0   },
-      { "bulan": "Desember", "checklist": 0,   "open": 0, "submitted": 0, "approved": 0,   "foto": 0,   "prestasi": 0   }
+      { "bulan": "Juli", "checklist": 15, "open": 15, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 3 },
+      { "bulan": "Agustus", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 },
+      { "bulan": "September", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 },
+      { "bulan": "Oktober", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 },
+      { "bulan": "November", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 },
+      { "bulan": "Desember", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 }
+    ]
+  },
+  {
+    "area": "Corpu",
+    "tahun": 2023,
+    "data": [
+      { "bulan": "Januari", "checklist": 140, "open": 10, "submitted": 5, "approved": 125, "foto": 130, "prestasi": 180 },
+      { "bulan": "Februari", "checklist": 145, "open": 8, "submitted": 7, "approved": 130, "foto": 140, "prestasi": 110 },
+      { "bulan": "Maret", "checklist": 150, "open": 5, "submitted": 10, "approved": 135, "foto": 145, "prestasi": 105 },
+      { "bulan": "April", "checklist": 148, "open": 3, "submitted": 5, "approved": 140, "foto": 145, "prestasi": 95 },
+      { "bulan": "Mei", "checklist": 150, "open": 2, "submitted": 8, "approved": 140, "foto": 148, "prestasi": 98 },
+      { "bulan": "Juni", "checklist": 152, "open": 0, "submitted": 2, "approved": 150, "foto": 152, "prestasi": 95 },
+      { "bulan": "Juli", "checklist": 8, "open": 8, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 5 },
+      { "bulan": "Agustus", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 },
+      { "bulan": "September", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 },
+      { "bulan": "Oktober", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 },
+      { "bulan": "November", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 },
+      { "bulan": "Desember", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 }
+    ]
+  },
+  {
+    "area": "Corpu",
+    "tahun": 2024,
+    "data": [
+      { "bulan": "Januari", "checklist": 155, "open": 5, "submitted": 10, "approved": 140, "foto": 150, "prestasi": 210 },
+      { "bulan": "Februari", "checklist": 158, "open": 3, "submitted": 8, "approved": 147, "foto": 155, "prestasi": 95 },
+      { "bulan": "Maret", "checklist": 160, "open": 2, "submitted": 5, "approved": 153, "foto": 158, "prestasi": 92 },
+      { "bulan": "April", "checklist": 160, "open": 0, "submitted": 5, "approved": 155, "foto": 160, "prestasi": 90 },
+      { "bulan": "Mei", "checklist": 162, "open": 0, "submitted": 2, "approved": 160, "foto": 162, "prestasi": 88 },
+      { "bulan": "Juni", "checklist": 165, "open": 0, "submitted": 0, "approved": 165, "foto": 165, "prestasi": 95 },
+      { "bulan": "Juli", "checklist": 10, "open": 10, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 4 },
+      { "bulan": "Agustus", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 },
+      { "bulan": "September", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 },
+      { "bulan": "Oktober", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 },
+      { "bulan": "November", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 },
+      { "bulan": "Desember", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 }
+    ]
+  },
+  {
+    "area": "Corpu",
+    "tahun": 2025,
+    "data": [
+      { "bulan": "Januari", "checklist": 170, "open": 5, "submitted": 10, "approved": 155, "foto": 165, "prestasi": 190 },
+      { "bulan": "Februari", "checklist": 168, "open": 3, "submitted": 8, "approved": 157, "foto": 165, "prestasi": 145 },
+      { "bulan": "Maret", "checklist": 165, "open": 2, "submitted": 5, "approved": 158, "foto": 163, "prestasi": 140 },
+      { "bulan": "April", "checklist": 163, "open": 0, "submitted": 3, "approved": 160, "foto": 163, "prestasi": 125 },
+      { "bulan": "Mei", "checklist": 164, "open": 0, "submitted": 4, "approved": 160, "foto": 164, "prestasi": 108 },
+      { "bulan": "Juni", "checklist": 165, "open": 0, "submitted": 0, "approved": 165, "foto": 165, "prestasi": 100 },
+      { "bulan": "Juli", "checklist": 12, "open": 12, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 5 },
+      { "bulan": "Agustus", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 },
+      { "bulan": "September", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 },
+      { "bulan": "Oktober", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 },
+      { "bulan": "November", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 },
+      { "bulan": "Desember", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 }
+    ]
+  },
+  {
+    "area": "Priangan Timur",
+    "tahun": 2023,
+    "data": [
+      { "bulan": "Januari", "checklist": 130, "open": 15, "submitted": 10, "approved": 105, "foto": 115, "prestasi": 165 },
+      { "bulan": "Februari", "checklist": 135, "open": 12, "submitted": 8, "approved": 115, "foto": 123, "prestasi": 98 },
+      { "bulan": "Maret", "checklist": 138, "open": 10, "submitted": 10, "approved": 118, "foto": 128, "prestasi": 92 },
+      { "bulan": "April", "checklist": 140, "open": 8, "submitted": 7, "approved": 125, "foto": 133, "prestasi": 88 },
+      { "bulan": "Mei", "checklist": 142, "open": 5, "submitted": 7, "approved": 130, "foto": 137, "prestasi": 85 },
+      { "bulan": "Juni", "checklist": 145, "open": 3, "submitted": 2, "approved": 140, "foto": 143, "prestasi": 82 },
+      { "bulan": "Juli", "checklist": 12, "open": 12, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 8 },
+      { "bulan": "Agustus", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 },
+      { "bulan": "September", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 },
+      { "bulan": "Oktober", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 },
+      { "bulan": "November", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 },
+      { "bulan": "Desember", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 }
+    ]
+  },
+  {
+    "area": "Priangan Timur",
+    "tahun": 2024,
+    "data": [
+      { "bulan": "Januari", "checklist": 148, "open": 8, "submitted": 10, "approved": 130, "foto": 140, "prestasi": 195 },
+      { "bulan": "Februari", "checklist": 150, "open": 5, "submitted": 8, "approved": 137, "foto": 145, "prestasi": 85 },
+      { "bulan": "Maret", "checklist": 152, "open": 4, "submitted": 6, "approved": 142, "foto": 148, "prestasi": 82 },
+      { "bulan": "April", "checklist": 155, "open": 2, "submitted": 5, "approved": 148, "foto": 153, "prestasi": 78 },
+      { "bulan": "Mei", "checklist": 155, "open": 0, "submitted": 5, "approved": 150, "foto": 155, "prestasi": 75 },
+      { "bulan": "Juni", "checklist": 158, "open": 0, "submitted": 3, "approved": 155, "foto": 158, "prestasi": 80 },
+      { "bulan": "Juli", "checklist": 15, "open": 15, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 6 },
+      { "bulan": "Agustus", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 },
+      { "bulan": "September", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 },
+      { "bulan": "Oktober", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 },
+      { "bulan": "November", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 },
+      { "bulan": "Desember", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 }
+    ]
+  },
+  {
+    "area": "Priangan Timur",
+    "tahun": 2025,
+    "data": [
+      { "bulan": "Januari", "checklist": 165, "open": 8, "submitted": 12, "approved": 145, "foto": 157, "prestasi": 185 },
+      { "bulan": "Februari", "checklist": 163, "open": 5, "submitted": 10, "approved": 148, "foto": 158, "prestasi": 138 },
+      { "bulan": "Maret", "checklist": 160, "open": 3, "submitted": 7, "approved": 150, "foto": 157, "prestasi": 132 },
+      { "bulan": "April", "checklist": 158, "open": 2, "submitted": 6, "approved": 150, "foto": 156, "prestasi": 118 },
+      { "bulan": "Mei", "checklist": 160, "open": 0, "submitted": 5, "approved": 155, "foto": 160, "prestasi": 102 },
+      { "bulan": "Juni", "checklist": 162, "open": 0, "submitted": 2, "approved": 160, "foto": 162, "prestasi": 98 },
+      { "bulan": "Juli", "checklist": 18, "open": 18, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 7 },
+      { "bulan": "Agustus", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 },
+      { "bulan": "September", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 },
+      { "bulan": "Oktober", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 },
+      { "bulan": "November", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 },
+      { "bulan": "Desember", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 }
+    ]
+  },
+  {
+    "area": "Priangan Barat",
+    "tahun": 2023,
+    "data": [
+      { "bulan": "Januari", "checklist": 120, "open": 20, "submitted": 15, "approved": 85, "foto": 100, "prestasi": 150 },
+      { "bulan": "Februari", "checklist": 125, "open": 18, "submitted": 12, "approved": 95, "foto": 107, "prestasi": 88 },
+      { "bulan": "Maret", "checklist": 128, "open": 15, "submitted": 13, "approved": 100, "foto": 113, "prestasi": 85 },
+      { "bulan": "April", "checklist": 130, "open": 12, "submitted": 10, "approved": 108, "foto": 118, "prestasi": 80 },
+      { "bulan": "Mei", "checklist": 132, "open": 10, "submitted": 12, "approved": 110, "foto": 122, "prestasi": 78 },
+      { "bulan": "Juni", "checklist": 135, "open": 8, "submitted": 7, "approved": 120, "foto": 127, "prestasi": 75 },
+      { "bulan": "Juli", "checklist": 20, "open": 20, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 10 },
+      { "bulan": "Agustus", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 },
+      { "bulan": "September", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 },
+      { "bulan": "Oktober", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 },
+      { "bulan": "November", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 },
+      { "bulan": "Desember", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 }
+    ]
+  },
+  {
+    "area": "Priangan Barat",
+    "tahun": 2024,
+    "data": [
+      { "bulan": "Januari", "checklist": 138, "open": 15, "submitted": 13, "approved": 110, "foto": 123, "prestasi": 175 },
+      { "bulan": "Februari", "checklist": 140, "open": 12, "submitted": 10, "approved": 118, "foto": 130, "prestasi": 75 },
+      { "bulan": "Maret", "checklist": 142, "open": 10, "submitted": 12, "approved": 120, "foto": 132, "prestasi": 72 },
+      { "bulan": "April", "checklist": 145, "open": 8, "submitted": 10, "approved": 127, "foto": 137, "prestasi": 68 },
+      { "bulan": "Mei", "checklist": 148, "open": 5, "submitted": 8, "approved": 135, "foto": 143, "prestasi": 65 },
+      { "bulan": "Juni", "checklist": 150, "open": 3, "submitted": 7, "approved": 140, "foto": 147, "prestasi": 70 },
+      { "bulan": "Juli", "checklist": 18, "open": 18, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 8 },
+      { "bulan": "Agustus", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 },
+      { "bulan": "September", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 },
+      { "bulan": "Oktober", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 },
+      { "bulan": "November", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 },
+      { "bulan": "Desember", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 }
+    ]
+  },
+  {
+    "area": "Priangan Barat",
+    "tahun": 2025,
+    "data": [
+      { "bulan": "Januari", "checklist": 155, "open": 12, "submitted": 15, "approved": 128, "foto": 143, "prestasi": 170 },
+      { "bulan": "Februari", "checklist": 153, "open": 10, "submitted": 13, "approved": 130, "foto": 143, "prestasi": 128 },
+      { "bulan": "Maret", "checklist": 150, "open": 8, "submitted": 12, "approved": 130, "foto": 142, "prestasi": 122 },
+      { "bulan": "April", "checklist": 148, "open": 5, "submitted": 10, "approved": 133, "foto": 143, "prestasi": 108 },
+      { "bulan": "Mei", "checklist": 150, "open": 3, "submitted": 7, "approved": 140, "foto": 147, "prestasi": 95 },
+      { "bulan": "Juni", "checklist": 152, "open": 2, "submitted": 5, "approved": 145, "foto": 150, "prestasi": 88 },
+      { "bulan": "Juli", "checklist": 20, "open": 20, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 9 },
+      { "bulan": "Agustus", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 },
+      { "bulan": "September", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 },
+      { "bulan": "Oktober", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 },
+      { "bulan": "November", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 },
+      { "bulan": "Desember", "checklist": 0, "open": 0, "submitted": 0, "approved": 0, "foto": 0, "prestasi": 0 }
     ]
   }
 ]

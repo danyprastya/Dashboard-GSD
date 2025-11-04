@@ -1,0 +1,149 @@
+name: AppSheet Crawler
+
+on:
+  # Scheduled cron jobs
+  schedule:
+    # Pagi: 08:00 WIB (01:00 UTC karena WIB = UTC+7)
+    - cron: '0 1 * * *'
+    # Siang: 14:00 WIB (07:00 UTC)
+    - cron: '0 7 * * *'
+  
+  # Manual trigger via workflow_dispatch
+  workflow_dispatch:
+    inputs:
+      areas:
+        description: 'Areas to crawl (comma-separated: A,B,C,D or leave empty for all)'
+        required: false
+        default: 'A,B,C,D'
+      month:
+        description: 'Target month (e.g., Oktober 2025)'
+        required: false
+        default: ''
+      crawl_mode:
+        description: 'Crawl mode'
+        required: true
+        type: choice
+        options:
+          - all
+          - conditional
+        default: 'all'
+
+jobs:
+  determine-areas:
+    name: Determine Areas to Crawl
+    runs-on: ubuntu-latest
+    outputs:
+      areas: ${{ steps.check.outputs.areas }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      
+      - name: Check which areas need crawling
+        id: check
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          CRAWL_MODE: ${{ github.event.inputs.crawl_mode || 'all' }}
+          MANUAL_AREAS: ${{ github.event.inputs.areas }}
+        run: |
+          # Jika manual trigger dengan areas specified, gunakan itu
+          if [ -n "$MANUAL_AREAS" ]; then
+            echo "areas=$MANUAL_AREAS" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          
+          # Jika scheduled run siang (07:00 UTC) dan mode conditional
+          CURRENT_HOUR=$(date -u +%H)
+          if [ "$CURRENT_HOUR" = "07" ] && [ "$CRAWL_MODE" = "conditional" ]; then
+            # TODO: Query Supabase untuk cek area mana yang belum 100%
+            # Untuk sementara, crawl semua
+            echo "areas=A,B,C,D" >> $GITHUB_OUTPUT
+          else
+            # Default: crawl semua area
+            echo "areas=A,B,C,D" >> $GITHUB_OUTPUT
+          fi
+
+  crawl:
+    name: Crawl AppSheet Data
+    runs-on: ubuntu-latest
+    needs: determine-areas
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      
+      - name: Install dependencies
+        run: |
+          npm install playwright
+          npx playwright install chromium
+          npx playwright install-deps chromium
+      
+      - name: Run crawler
+        env:
+          # Gmail credentials
+          GMAIL_EMAIL: ${{ secrets.GMAIL_EMAIL }}
+          GMAIL_PASSWORD: ${{ secrets.GMAIL_PASSWORD }}
+          
+          # AppSheet URLs
+          APPSHEET_URL_AREA_A: ${{ secrets.APPSHEET_URL_AREA_A }}
+          APPSHEET_URL_AREA_B: ${{ secrets.APPSHEET_URL_AREA_B }}
+          APPSHEET_URL_AREA_C: ${{ secrets.APPSHEET_URL_AREA_C }}
+          APPSHEET_URL_AREA_D: ${{ secrets.APPSHEET_URL_AREA_D }}
+          
+          # AppSheet usernames
+          APPSHEET_USER_AREA_A: ${{ secrets.APPSHEET_USER_AREA_A }}
+          APPSHEET_USER_AREA_B: ${{ secrets.APPSHEET_USER_AREA_B }}
+          APPSHEET_USER_AREA_C: ${{ secrets.APPSHEET_USER_AREA_C }}
+          APPSHEET_USER_AREA_D: ${{ secrets.APPSHEET_USER_AREA_D }}
+          
+          # Next.js API
+          NEXTJS_API_URL: ${{ secrets.NEXTJS_API_URL }}
+          
+          # Configuration
+          AREAS_TO_CRAWL: ${{ needs.determine-areas.outputs.areas }}
+          TARGET_MONTH: ${{ github.event.inputs.month || 'Oktober 2025' }}
+        run: |
+          node crawler/appsheet-crawler.js
+      
+      - name: Upload logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: crawler-logs
+          path: |
+            *.log
+            screenshots/*.png
+          retention-days: 7
+      
+      - name: Notify on failure
+        if: failure()
+        run: |
+          echo "❌ Crawler failed! Check logs in artifacts."
+          # TODO: Kirim notifikasi ke Slack/Discord/Email
+
+  # Job untuk conditional crawl (hanya run di siang hari)
+  conditional-check:
+    name: Check Completion Status
+    runs-on: ubuntu-latest
+    if: github.event.schedule == '0 7 * * *'  # Hanya run untuk cron siang
+    
+    steps:
+      - name: Query Supabase for incomplete areas
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: |
+          # Query untuk cek area dengan progress < 100%
+          # Simpan hasilnya untuk job selanjutnya
+          echo "TODO: Implement Supabase query"

@@ -1,5 +1,5 @@
 "use client"
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { supabase } from './lib/supabaseclient'
 import { useRouter } from 'next/navigation'
 
@@ -9,13 +9,21 @@ export default function LoginPage() {
   const [password, setPassword] = useState('')
   const [status, setStatus] = useState('')
   const [error, setError] = useState('')
+  const [mounted, setMounted] = useState(false) // 🧩 untuk hindari SSR hydration mismatch
+
+  // Jalankan hanya di client
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  // Jika belum mounted, jangan render apa pun
+  if (!mounted) return null
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setError('')
     setStatus('Sedang memeriksa...')
 
-    // Ambil data user berdasarkan username & password
     const { data, error } = await supabase
       .from('user')
       .select('USERNAME, PASSWORD, ROLE')
@@ -29,11 +37,16 @@ export default function LoginPage() {
       return
     }
 
-    // Simpan user ke localStorage
-    localStorage.setItem('user', JSON.stringify(data))
+    // Simpan user ke localStorage (pastikan hanya di client)
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('user', JSON.stringify(data))
+      document.cookie = `isLoggedIn=true; path=/; max-age=86400; SameSite=Lax`
+      document.cookie = `userRole=${data.ROLE}; path=/; max-age=86400; SameSite=Lax`
+    }
+
     setStatus('Login berhasil!')
 
-    // Cek role dan arahkan ke halaman sesuai
+    // Arahkan sesuai role
     if (data.ROLE === 'admin') {
       router.push('/dashboard')
     } else if (data.ROLE === 'superadmin') {

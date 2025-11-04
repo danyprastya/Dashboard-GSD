@@ -1,0 +1,53 @@
+[
+  {
+    "tahun": 2023,
+    "data": [
+      { "bulan": "Januari", "checklist": 160, "open": 0, "submitted": 0, "approved": 160, "foto": 160, "prestasi": 210 },
+      { "bulan": "Februari", "checklist": 162, "open": 0, "submitted": 0, "approved": 162, "foto": 162, "prestasi": 120 },
+      { "bulan": "Maret", "checklist": 165, "open": 0, "submitted": 0, "approved": 165, "foto": 165, "prestasi": 115 },
+      { "bulan": "April", "checklist": 166, "open": 0, "submitted": 0, "approved": 166, "foto": 166, "prestasi": 99 },
+      { "bulan": "Mei", "checklist": 167, "open": 0, "submitted": 0, "approved": 167, "foto": 167, "prestasi": 102 },
+      { "bulan": "Juni", "checklist": 168, "open": 0, "submitted": 0, "approved": 168, "foto": 168, "prestasi": 100 },
+      { "bulan": "Juli", "checklist": 5,   "open": 5, "submitted": 0, "approved": 0,   "foto": 0,   "prestasi": 2   },
+      { "bulan": "Agustus", "checklist": 0,   "open": 0, "submitted": 0, "approved": 0,   "foto": 0,   "prestasi": 0   },
+      { "bulan": "September", "checklist": 0,   "open": 0, "submitted": 0, "approved": 0,   "foto": 0,   "prestasi": 0   },
+      { "bulan": "Oktober", "checklist": 0,   "open": 0, "submitted": 0, "approved": 0,   "foto": 0,   "prestasi": 0   },
+      { "bulan": "November", "checklist": 0,   "open": 0, "submitted": 0, "approved": 0,   "foto": 0,   "prestasi": 0   },
+      { "bulan": "Desember", "checklist": 0,   "open": 0, "submitted": 0, "approved": 0,   "foto": 0,   "prestasi": 0   }
+    ]
+  },
+  {
+    "tahun": 2024,
+    "data": [
+      { "bulan": "Januari", "checklist": 165, "open": 0, "submitted": 0, "approved": 165, "foto": 165, "prestasi": 227 },
+      { "bulan": "Februari", "checklist": 165, "open": 0, "submitted": 0, "approved": 165, "foto": 165, "prestasi": 100 },
+      { "bulan": "Maret", "checklist": 165, "open": 0, "submitted": 0, "approved": 165, "foto": 165, "prestasi": 100 },
+      { "bulan": "April", "checklist": 165, "open": 0, "submitted": 0, "approved": 165, "foto": 165, "prestasi": 99 },
+      { "bulan": "Mei", "checklist": 165, "open": 0, "submitted": 0, "approved": 165, "foto": 165, "prestasi": 99 },
+      { "bulan": "Juni", "checklist": 165, "open": 0, "submitted": 0, "approved": 165, "foto": 165, "prestasi": 100 },
+      { "bulan": "Juli", "checklist": 5,   "open": 5, "submitted": 0, "approved": 0,   "foto": 0,   "prestasi": 2   },
+      { "bulan": "Agustus", "checklist": 0,   "open": 0, "submitted": 0, "approved": 0,   "foto": 0,   "prestasi": 0   },
+      { "bulan": "September", "checklist": 0,   "open": 0, "submitted": 0, "approved": 0,   "foto": 0,   "prestasi": 0   },
+      { "bulan": "Oktober", "checklist": 0,   "open": 0, "submitted": 0, "approved": 0,   "foto": 0,   "prestasi": 0   },
+      { "bulan": "November", "checklist": 0,   "open": 0, "submitted": 0, "approved": 0,   "foto": 0,   "prestasi": 0   },
+      { "bulan": "Desember", "checklist": 0,   "open": 0, "submitted": 0, "approved": 0,   "foto": 0,   "prestasi": 0   }
+    ]
+  },
+  {
+    "tahun": 2025,
+    "data": [
+      { "bulan": "Januari", "checklist": 180, "open": 0, "submitted": 0, "approved": 180, "foto": 180, "prestasi": 200 },
+      { "bulan": "Februari", "checklist": 170, "open": 0, "submitted": 0, "approved": 170, "foto": 170, "prestasi": 150 },
+      { "bulan": "Maret", "checklist": 160, "open": 0, "submitted": 0, "approved": 160, "foto": 160, "prestasi": 145 },
+      { "bulan": "April", "checklist": 158, "open": 0, "submitted": 0, "approved": 158, "foto": 158, "prestasi": 130 },
+      { "bulan": "Mei", "checklist": 159, "open": 0, "submitted": 0, "approved": 159, "foto": 159, "prestasi": 110 },
+      { "bulan": "Juni", "checklist": 160, "open": 0, "submitted": 0, "approved": 160, "foto": 160, "prestasi": 105 },
+      { "bulan": "Juli", "checklist": 15,  "open": 15,"submitted": 0, "approved": 0,   "foto": 0,   "prestasi": 3   },
+      { "bulan": "Agustus", "checklist": 0,   "open": 0, "submitted": 0, "approved": 0,   "foto": 0,   "prestasi": 0   },
+      { "bulan": "September", "checklist": 0,   "open": 0, "submitted": 0, "approved": 0,   "foto": 0,   "prestasi": 0   },
+      { "bulan": "Oktober", "checklist": 0,   "open": 0, "submitted": 0, "approved": 0,   "foto": 0,   "prestasi": 0   },
+      { "bulan": "November", "checklist": 0,   "open": 0, "submitted": 0, "approved": 0,   "foto": 0,   "prestasi": 0   },
+      { "bulan": "Desember", "checklist": 0,   "open": 0, "submitted": 0, "approved": 0,   "foto": 0,   "prestasi": 0   }
+    ]
+  }
+]

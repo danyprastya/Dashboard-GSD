@@ -1,0 +1,59 @@
+{
+  "bandung": [
+    {
+      "kode_gedung": "BDG-001",
+      "nama_gedung": "Gedung Sate",
+      "provinsi": "Jawa Barat",
+      "area": "Bandung",
+      "alamat": "Jl. Diponegoro No. 22"
+    },
+    {
+      "kode_gedung": "BDG-002",
+      "nama_gedung": "Trans Studio Mall",
+      "provinsi": "Jawa Barat",
+      "area": "Bandung",
+      "alamat": "Jl. Gatot Subroto No. 289"
+    }
+  ],
+  "kawasan_corpu": [
+    {
+      "kode_gedung": "CORPU-001",
+      "nama_gedung": "Gedung Utama Corpu",
+      "provinsi": "Jawa Barat",
+      "area": "Kawasan Corpu",
+      "alamat": "Jl. Corpu Raya No. 1"
+    }
+  ],
+  "priangan_timur": [
+    {
+      "kode_gedung": "PRT-001",
+      "nama_gedung": "Gedung Soto",
+      "provinsi": "Jawa Barat",
+      "area": "Priangan Timur",
+      "alamat": "Jl. jalan No. 22"
+    },
+    {
+      "kode_gedung": "PRT-002",
+      "nama_gedung": "Trans Mart",
+      "provinsi": "Jawa Barat",
+      "area": "Bogor",
+      "alamat": "Jl. Gatot Subroto No. 289"
+    }
+  ],
+  "priangan_barat": [
+    {
+      "kode_gedung": "PRB-001",
+      "nama_gedung": "Gedung Gulai",
+      "provinsi": "Jawa Barat",
+      "area": "Cirebon",
+      "alamat": "Jl. Diponegoro No. 22"
+    },
+    {
+      "kode_gedung": "PRB-002",
+      "nama_gedung": "Taman Satwa Nasional",
+      "provinsi": "Jawa Barat",
+      "area": "Cirebon",
+      "alamat": "Jl. Gatot Subroto No. 289"
+    }
+  ]
+}

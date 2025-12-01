@@ -24,35 +24,53 @@ export default function LoginPage() {
     setError('')
     setStatus('Sedang memeriksa...')
 
-    const { data, error } = await supabase
-      .from('user')
-      .select('USERNAME, PASSWORD, ROLE')
-      .eq('USERNAME', username)
-      .eq('PASSWORD', password)
-      .single()
+    try {
+      // Panggil API route untuk login
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username,
+          password
+        })
+      });
 
-    if (error || !data) {
+      const result = await response.json();
+
+      if (!response.ok) {
+        setStatus('')
+        setError(result.error || 'Login gagal')
+        return
+      }
+
+      if (result.success && result.user) {
+        // Simpan user ke localStorage (pastikan hanya di client)
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('user', JSON.stringify(result.user))
+          document.cookie = `isLoggedIn=true; path=/; max-age=86400; SameSite=Lax`
+          document.cookie = `userRole=${result.user.role}; path=/; max-age=86400; SameSite=Lax`
+        }
+
+        setStatus('Login berhasil!')
+
+        // Arahkan sesuai role
+        if (result.user.role === 'admin') {
+          router.push('/dashboard')
+        } else if (result.user.role === 'superadmin') {
+          router.push('/superadmin')
+        } else {
+          setError('Role tidak dikenali')
+        }
+      } else {
+        setStatus('')
+        setError('Username atau password salah')
+      }
+    } catch (err) {
+      console.error('Login error:', err)
       setStatus('')
-      setError('Username atau password salah')
-      return
-    }
-
-    // Simpan user ke localStorage (pastikan hanya di client)
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('user', JSON.stringify(data))
-      document.cookie = `isLoggedIn=true; path=/; max-age=86400; SameSite=Lax`
-      document.cookie = `userRole=${data.ROLE}; path=/; max-age=86400; SameSite=Lax`
-    }
-
-    setStatus('Login berhasil!')
-
-    // Arahkan sesuai role
-    if (data.ROLE === 'admin') {
-      router.push('/dashboard')
-    } else if (data.ROLE === 'superadmin') {
-      router.push('/superadmin')
-    } else {
-      setError('Role tidak dikenali')
+      setError('Terjadi kesalahan saat login')
     }
   }
 

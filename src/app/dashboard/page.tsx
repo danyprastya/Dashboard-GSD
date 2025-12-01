@@ -1,10 +1,9 @@
 "use client";
-import { useEffect } from "react"
-import React, { useState } from "react";
+import { useEffect, useState, useCallback } from "react"
 import { AppSidebar } from "@/components/app-sidebar";
 import { ChartAreaInteractive } from "@/components/chart-area-interactive";
 import { DataTableOverall } from "@/components/data-table-overall";
-import { SectionCards } from "@/components/section-cards";
+import { StatsCards } from "@/components/stats-cards";
 import { SiteHeader } from "@/components/site-header";
 import {
   SidebarInset,
@@ -22,14 +21,13 @@ import data from "./data-overall.json";
 
 export default function Dashboard() {
   const [activePage, setActivePage] = useState("Dashboard");
-  const [selectedYear, setSelectedYear] = useState<number>(2025); // Default tahun 2025
-
-  // Get available years from data
-  const availableYears = data.map(item => item.tahun);
-
-  // Get data for selected year
-  const selectedYearData = data.find(item => item.tahun === selectedYear);
+  const [selectedYear, setSelectedYear] = useState<number>(2025);
+  const [statsData, setStatsData] = useState<any>(null);
+  const [statsLoading, setStatsLoading] = useState(true);
   const router = useRouter()
+
+  // Available years (hardcoded for now, bisa diganti dengan API)
+  const availableYears = [2024, 2025, 2026];
     // useEffect(() => {
     //   const loggedIn = document.cookie.includes("isLoggedIn=true")
     //   if (!loggedIn) {
@@ -37,11 +35,39 @@ export default function Dashboard() {
     //   }
     // }, [])
 
-    useEffect(() => {
+  useEffect(() => {
     const roleMatch = document.cookie.match(/userRole=([^;]+)/)
     const role = roleMatch ? roleMatch[1] : ''
     if (role !== 'admin') router.push('/')
   }, [])
+
+  // Fetch stats data dari API
+  const fetchStatsData = useCallback(async () => {
+    try {
+      setStatsLoading(true)
+      const response = await fetch(`/api/overview/monthly?year=${selectedYear}`)
+      const result = await response.json()
+      
+      if (result.success && result.totals) {
+        setStatsData({
+          totalGedung: result.totals.checklist || 0,
+          approved1_20: result.totals.period_1_20?.approved || 0,
+          approved21_30: result.totals.period_21_30?.approved || 0,
+          pending: result.totals.period_1_20?.submitted || 0,
+          open: result.totals.period_1_20?.open || 0,
+          error: (result.totals.period_21_30?.error || 0) + (result.totals.period_21_30?.not_found || 0)
+        })
+      }
+    } catch (err) {
+      console.error('Error fetching stats:', err)
+    } finally {
+      setStatsLoading(false)
+    }
+  }, [selectedYear])
+
+  useEffect(() => {
+    fetchStatsData()
+  }, [fetchStatsData])
 
   
   // Fungsi untuk logout
@@ -58,6 +84,7 @@ export default function Dashboard() {
 
   return (
     <SidebarProvider
+      suppressHydrationWarning
       style={
         {
           "--sidebar-width": "calc(var(--spacing) * 72)",
@@ -100,28 +127,30 @@ export default function Dashboard() {
                 </div>
               </div>
 
+              {/* Stats Cards */}
+              {/* <StatsCards data={statsData} loading={statsLoading} /> */}
+
               {/* Chart */}
               <div className="px-4 lg:px-6">
                 <ChartAreaInteractive 
-                  data={selectedYearData?.data || []} 
                   year={selectedYear}
                 />
               </div>
 
               {/* Table */}
               <div className="px-4 lg:px-6">
-                <DataTableOverall data={data} selectedYear={selectedYear} />
+                <DataTableOverall selectedYear={selectedYear} />
               </div>
             </div>
           </div>
         </div>
       </SidebarInset>
-      <button
+      {/* <button
         onClick={handleLogout}
         className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition"
       >
         Logout
-      </button>
+      </button> */}
     </SidebarProvider>
   );
 }

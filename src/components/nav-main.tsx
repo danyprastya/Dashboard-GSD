@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -35,8 +35,13 @@ interface NavMainProps {
 
 export function NavMain({ items }: NavMainProps) {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const [isMounted, setIsMounted] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const handleNavClick = (url: string) => {
     router.push(url);
@@ -59,12 +64,13 @@ export function NavMain({ items }: NavMainProps) {
               <SidebarMenuItem key={item.title}>
                 <SidebarMenuButton
                   onClick={() => handleNavClick(item.url!)}
-                  tooltip={item.title}
+                  tooltip={isMounted ? item.title : undefined}
                   className={cn(
                     "transition-colors",
                     isParentActive &&
                       "bg-primary/10 text-primary hover:bg-primary/20"
                   )}
+                  suppressHydrationWarning
                 >
                   {Icon && <Icon className="h-5 w-5" />}
                   <span>{item.title}</span>
@@ -87,12 +93,13 @@ export function NavMain({ items }: NavMainProps) {
               <SidebarMenuItem>
                 <CollapsibleTrigger asChild>
                   <SidebarMenuButton
-                    tooltip={item.title}
+                    tooltip={isMounted ? item.title : undefined}
                     className={cn(
                       "transition-colors",
                       isParentActive &&
                         "bg-primary/10 text-primary hover:bg-primary/20"
                     )}
+                    suppressHydrationWarning
                   >
                     {Icon && <Icon className="h-5 w-5" />}
                     <span>{item.title}</span>
@@ -112,7 +119,7 @@ export function NavMain({ items }: NavMainProps) {
                                 "bg-primary/10 text-primary hover:bg-primary/20"
                             )}
                           >
-                            <button onClick={() => handleNavClick(sub.url)}>
+                            <button onClick={() => handleNavClick(sub.url)} suppressHydrationWarning>
                               <span>{sub.title}</span>
                             </button>
                           </SidebarMenuSubButton>

@@ -47,24 +47,24 @@ const data = {
       title: "Kawasan Corpu",
       icon: IconBuildingCommunity,
       subItems: [
-        { title: "Detail Gedung", url: "/dashboard/table/kawasan-corpu" },
+        { title: "Detail Gedung", url: "/dashboard/table/corpu" },
         { title: "Gedung Rusak", url: "/corpu/rusak" },
-      ],
-    },
-    {
-      title: "Priangan Timur",
-      icon: IconBuildingFactory,
-      subItems: [
-        { title: "Detail Gedung", url: "/dashboard/table/priangan-timur" },
-        { title: "Gedung Rusak", url: "/priangan-timur/rusak" },
       ],
     },
     {
       title: "Priangan Barat",
       icon: IconBuildingStore,
       subItems: [
-        { title: "Detail Gedung", url: "/dashboard/table/priangan-barat" },
-        { title: "Gedung Rusak", url: "/priangan-barat/rusak" },
+        { title: "Detail Gedung", url: "/dashboard/table/prianganbarat" },
+        { title: "Gedung Rusak", url: "/prianganbarat/rusak" },
+      ],
+    },
+    {
+      title: "Priangan Timur",
+      icon: IconBuildingFactory,
+      subItems: [
+        { title: "Detail Gedung", url: "/dashboard/table/priangantimur" },
+        { title: "Gedung Rusak", url: "/priangantimur/rusak" },
       ],
     },
   ],

@@ -14,7 +14,7 @@ export function SiteHeader({activePage} : {activePage : string}) {
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <SidebarTrigger className="-ml-1" />
+              <SidebarTrigger className="-ml-1" suppressHydrationWarning />
             </TooltipTrigger>
             <TooltipContent>
               <p>Tutup/Buka Sidebar</p>

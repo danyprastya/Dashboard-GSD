@@ -54,25 +54,156 @@ type StatusBulanan = {
   updated_at: string;
 };
 
-// Component untuk dialog status bulanan
+// Component for action cell (extracted to fix rules-of-hooks)
+function ActionCell({ gedung }: { gedung: Gedung }) {
+  const [openDetail, setOpenDetail] = useState(false);
+
+  return (
+    <div className="flex gap-2">
+      {/* Tombol Lihat Status */}
+      <StatusBulananDialog kode_gedung={gedung.kode_gedung} />
+
+      {/* Tombol Lihat Detail */}
+      <Dialog open={openDetail} onOpenChange={setOpenDetail}>
+        <DialogTrigger asChild>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setOpenDetail(true)}
+          >
+            <Eye className="mr-2 h-4 w-4" />
+            Lihat Detail
+          </Button>
+        </DialogTrigger>
+        <DialogContent className="max-w-[60vw] sm:max-w-[60vw] lg:max-w-3xl xl:max-w-4xl max-h-[90vh] overflow-y-auto p-8">
+          <DialogHeader>
+            <DialogTitle className="text-2xl">Detail Gedung</DialogTitle>
+            <DialogDescription className="text-base">
+              Informasi lengkap untuk {gedung.kode_gedung}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
+            {/* Kolom Kiri */}
+            <div className="space-y-5">
+              <div className="border-b pb-4">
+                <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground mb-2.5">
+                  Kode Gedung
+                </p>
+                <p className="text-base font-medium">{gedung.kode_gedung}</p>
+              </div>
+              <div className="border-b pb-4">
+                <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground mb-2.5">
+                  Nama Lokasi
+                </p>
+                <p className="text-base font-medium">{gedung.nama_lokasi}</p>
+              </div>
+              <div className="border-b pb-4">
+                <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground mb-2.5">
+                  Provinsi
+                </p>
+                <p className="text-base font-medium">{gedung.provinsi}</p>
+              </div>
+              <div className="border-b pb-4">
+                <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground mb-2.5">
+                  Kawasan
+                </p>
+                <p className="text-base font-medium">{gedung.kawasan}</p>
+              </div>
+              <div className="border-b pb-4">
+                <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground mb-2.5">
+                  Area
+                </p>
+                <p className="text-base font-medium">{gedung.area}</p>
+              </div>
+              <div className="border-b pb-4">
+                <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground mb-2.5">
+                  Kabupaten/Kota
+                </p>
+                <p className="text-base font-medium">{gedung.kab_kota}</p>
+              </div>
+              <div className="border-b pb-4">
+                <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground mb-2.5">
+                  Witel
+                </p>
+                <p className="text-base font-medium">{gedung.witel}</p>
+              </div>
+            </div>
+
+            {/* Kolom Kanan */}
+            <div className="space-y-5">
+              <div className="border-b pb-4">
+                <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground mb-2.5">
+                  Peruntukan
+                </p>
+                <p className="text-base font-medium">{gedung.peruntukan}</p>
+              </div>
+              <div className="border-b pb-4">
+                <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground mb-2.5">
+                  Kelas Berbayar
+                </p>
+                <p className="text-base font-medium">{gedung.kelas_berbayar}</p>
+              </div>
+              <div className="border-b pb-4">
+                <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground mb-2.5">
+                  Luasan Berbayar
+                </p>
+                <p className="text-base font-medium">
+                  {gedung.luasan_berbayar} m²
+                </p>
+              </div>
+              <div className="border-b pb-4">
+                <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground mb-2.5">
+                  Keterangan
+                </p>
+                <Badge
+                  variant={
+                    gedung.keterangan === "AKTIF" ? "default" : "secondary"
+                  }
+                  className="text-sm px-3 py-1"
+                >
+                  {gedung.keterangan}
+                </Badge>
+              </div>
+              <div className="border-b pb-4">
+                <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground mb-2.5">
+                  Alamat Lokasi
+                </p>
+                <p className="text-base font-medium break-words">
+                  {gedung.alamat_lokasi}
+                </p>
+              </div>
+              {gedung.histori && (
+                <div className="border-b pb-4">
+                  <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground mb-2.5">
+                    Histori
+                  </p>
+                  <p className="text-base font-medium">{gedung.histori}</p>
+                </div>
+              )}
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+}
 function StatusBulananDialog({ kode_gedung }: { kode_gedung: string }) {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [statusData, setStatusData] = useState<StatusBulanan[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
-  const [editValues, setEditValues] = useState<{ period_1_20: string; period_21_30: string }>({
+  const [editValues, setEditValues] = useState<{
+    period_1_20: string;
+    period_21_30: string;
+  }>({
     period_1_20: "",
-    period_21_30: ""
+    period_21_30: "",
   });
   const [saving, setSaving] = useState(false);
 
   // Status options untuk dropdown - berbeda per periode
-  const statusOptionsPeriod1 = [
-    "OPEN",
-    "SUBMITTED",
-    "APPROVED"
-  ];
+  const statusOptionsPeriod1 = ["OPEN", "SUBMITTED", "APPROVED"];
 
   const statusOptionsPeriod2 = [
     "OPEN",
@@ -81,24 +212,26 @@ function StatusBulananDialog({ kode_gedung }: { kode_gedung: string }) {
     "NOT APPROVED",
     "ERROR",
     "NONE",
-    "NOT FOUND"
+    "NOT FOUND",
   ];
 
   const fetchStatusData = async () => {
     if (statusData.length > 0) return; // Already loaded
-    
+
     try {
       setLoading(true);
       setError(null);
-      
-      const response = await fetch(`/api/status-bulanan?kode_gedung=${kode_gedung}`);
-      
+
+      const response = await fetch(
+        `/api/status-bulanan?kode_gedung=${kode_gedung}`
+      );
+
       if (!response.ok) {
         throw new Error(`Failed to fetch status: ${response.statusText}`);
       }
 
       const result = await response.json();
-      
+
       if (result.success) {
         setStatusData(result.data);
       } else {
@@ -116,7 +249,7 @@ function StatusBulananDialog({ kode_gedung }: { kode_gedung: string }) {
     setEditingId(status.id);
     setEditValues({
       period_1_20: status.period_1_20,
-      period_21_30: status.period_21_30
+      period_21_30: status.period_21_30,
     });
   };
 
@@ -128,17 +261,17 @@ function StatusBulananDialog({ kode_gedung }: { kode_gedung: string }) {
   const handleSave = async (statusId: string) => {
     try {
       setSaving(true);
-      
+
       const response = await fetch("/api/status-bulanan", {
         method: "PUT",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           id: statusId,
           period_1_20: editValues.period_1_20,
-          period_21_30: editValues.period_21_30
-        })
+          period_21_30: editValues.period_21_30,
+        }),
       });
 
       if (!response.ok) {
@@ -149,10 +282,14 @@ function StatusBulananDialog({ kode_gedung }: { kode_gedung: string }) {
 
       if (result.success) {
         // Update local state
-        setStatusData(prev => 
-          prev.map(item => 
-            item.id === statusId 
-              ? { ...item, period_1_20: editValues.period_1_20, period_21_30: editValues.period_21_30 }
+        setStatusData((prev) =>
+          prev.map((item) =>
+            item.id === statusId
+              ? {
+                  ...item,
+                  period_1_20: editValues.period_1_20,
+                  period_21_30: editValues.period_21_30,
+                }
               : item
           )
         );
@@ -176,12 +313,15 @@ function StatusBulananDialog({ kode_gedung }: { kode_gedung: string }) {
     }
   };
 
-  const getStatusBadgeVariant = (status: string): "default" | "secondary" | "destructive" | "outline" => {
+  const getStatusBadgeVariant = (
+    status: string
+  ): "default" | "secondary" | "destructive" | "outline" => {
     const upperStatus = status.toUpperCase();
     if (upperStatus === "APPROVED") return "default";
     if (upperStatus === "SUBMITTED") return "secondary";
     if (upperStatus === "OPEN") return "outline";
-    if (upperStatus === "NOT APPROVED" || upperStatus === "ERROR") return "destructive";
+    if (upperStatus === "NOT APPROVED" || upperStatus === "ERROR")
+      return "destructive";
     return "secondary";
   };
 
@@ -205,7 +345,9 @@ function StatusBulananDialog({ kode_gedung }: { kode_gedung: string }) {
           <div className="flex items-center justify-center py-12">
             <div className="text-center">
               <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]" />
-              <p className="mt-4 text-sm text-muted-foreground">Loading status data...</p>
+              <p className="mt-4 text-sm text-muted-foreground">
+                Loading status data...
+              </p>
             </div>
           </div>
         ) : error ? (
@@ -223,7 +365,9 @@ function StatusBulananDialog({ kode_gedung }: { kode_gedung: string }) {
           </div>
         ) : statusData.length === 0 ? (
           <div className="flex items-center justify-center py-12">
-            <p className="text-muted-foreground">Tidak ada data status untuk gedung ini</p>
+            <p className="text-muted-foreground">
+              Tidak ada data status untuk gedung ini
+            </p>
           </div>
         ) : (
           <div className="mt-6">
@@ -251,7 +395,12 @@ function StatusBulananDialog({ kode_gedung }: { kode_gedung: string }) {
                     {statusData.map((status, index) => {
                       const isEditing = editingId === status.id;
                       return (
-                        <tr key={status.id} className={index % 2 === 0 ? "bg-background" : "bg-muted/20"}>
+                        <tr
+                          key={status.id}
+                          className={
+                            index % 2 === 0 ? "bg-background" : "bg-muted/20"
+                          }
+                        >
                           <td className="px-4 py-4 font-medium">
                             {status.month}
                           </td>
@@ -259,13 +408,18 @@ function StatusBulananDialog({ kode_gedung }: { kode_gedung: string }) {
                             {isEditing ? (
                               <Select
                                 value={editValues.period_1_20}
-                                onValueChange={(value) => setEditValues(prev => ({ ...prev, period_1_20: value }))}
+                                onValueChange={(value) =>
+                                  setEditValues((prev) => ({
+                                    ...prev,
+                                    period_1_20: value,
+                                  }))
+                                }
                               >
                                 <SelectTrigger className="w-[180px]">
                                   <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent>
-                                  {statusOptionsPeriod1.map(option => (
+                                  {statusOptionsPeriod1.map((option) => (
                                     <SelectItem key={option} value={option}>
                                       {option}
                                     </SelectItem>
@@ -273,7 +427,12 @@ function StatusBulananDialog({ kode_gedung }: { kode_gedung: string }) {
                                 </SelectContent>
                               </Select>
                             ) : (
-                              <Badge variant={getStatusBadgeVariant(status.period_1_20)} className="text-sm">
+                              <Badge
+                                variant={getStatusBadgeVariant(
+                                  status.period_1_20
+                                )}
+                                className="text-sm"
+                              >
                                 {status.period_1_20}
                               </Badge>
                             )}
@@ -282,13 +441,18 @@ function StatusBulananDialog({ kode_gedung }: { kode_gedung: string }) {
                             {isEditing ? (
                               <Select
                                 value={editValues.period_21_30}
-                                onValueChange={(value) => setEditValues(prev => ({ ...prev, period_21_30: value }))}
+                                onValueChange={(value) =>
+                                  setEditValues((prev) => ({
+                                    ...prev,
+                                    period_21_30: value,
+                                  }))
+                                }
                               >
                                 <SelectTrigger className="w-[180px]">
                                   <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent>
-                                  {statusOptionsPeriod2.map(option => (
+                                  {statusOptionsPeriod2.map((option) => (
                                     <SelectItem key={option} value={option}>
                                       {option}
                                     </SelectItem>
@@ -296,7 +460,12 @@ function StatusBulananDialog({ kode_gedung }: { kode_gedung: string }) {
                                 </SelectContent>
                               </Select>
                             ) : (
-                              <Badge variant={getStatusBadgeVariant(status.period_21_30)} className="text-sm">
+                              <Badge
+                                variant={getStatusBadgeVariant(
+                                  status.period_21_30
+                                )}
+                                className="text-sm"
+                              >
                                 {status.period_21_30}
                               </Badge>
                             )}
@@ -351,7 +520,10 @@ function StatusBulananDialog({ kode_gedung }: { kode_gedung: string }) {
               {statusData.map((status) => {
                 const isEditing = editingId === status.id;
                 return (
-                  <div key={status.id} className="border rounded-lg p-4 space-y-3">
+                  <div
+                    key={status.id}
+                    className="border rounded-lg p-4 space-y-3"
+                  >
                     <div className="flex justify-between items-center border-b pb-2">
                       <span className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
                         Bulan
@@ -365,13 +537,18 @@ function StatusBulananDialog({ kode_gedung }: { kode_gedung: string }) {
                       {isEditing ? (
                         <Select
                           value={editValues.period_1_20}
-                          onValueChange={(value) => setEditValues(prev => ({ ...prev, period_1_20: value }))}
+                          onValueChange={(value) =>
+                            setEditValues((prev) => ({
+                              ...prev,
+                              period_1_20: value,
+                            }))
+                          }
                         >
                           <SelectTrigger className="w-full">
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent>
-                            {statusOptionsPeriod1.map(option => (
+                            {statusOptionsPeriod1.map((option) => (
                               <SelectItem key={option} value={option}>
                                 {option}
                               </SelectItem>
@@ -379,7 +556,10 @@ function StatusBulananDialog({ kode_gedung }: { kode_gedung: string }) {
                           </SelectContent>
                         </Select>
                       ) : (
-                        <Badge variant={getStatusBadgeVariant(status.period_1_20)} className="text-sm w-fit">
+                        <Badge
+                          variant={getStatusBadgeVariant(status.period_1_20)}
+                          className="text-sm w-fit"
+                        >
                           {status.period_1_20}
                         </Badge>
                       )}
@@ -391,13 +571,18 @@ function StatusBulananDialog({ kode_gedung }: { kode_gedung: string }) {
                       {isEditing ? (
                         <Select
                           value={editValues.period_21_30}
-                          onValueChange={(value) => setEditValues(prev => ({ ...prev, period_21_30: value }))}
+                          onValueChange={(value) =>
+                            setEditValues((prev) => ({
+                              ...prev,
+                              period_21_30: value,
+                            }))
+                          }
                         >
                           <SelectTrigger className="w-full">
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent>
-                            {statusOptionsPeriod2.map(option => (
+                            {statusOptionsPeriod2.map((option) => (
                               <SelectItem key={option} value={option}>
                                 {option}
                               </SelectItem>
@@ -405,7 +590,10 @@ function StatusBulananDialog({ kode_gedung }: { kode_gedung: string }) {
                           </SelectContent>
                         </Select>
                       ) : (
-                        <Badge variant={getStatusBadgeVariant(status.period_21_30)} className="text-sm w-fit">
+                        <Badge
+                          variant={getStatusBadgeVariant(status.period_21_30)}
+                          className="text-sm w-fit"
+                        >
                           {status.period_21_30}
                         </Badge>
                       )}
@@ -507,123 +695,7 @@ export const columns: ColumnDef<Gedung>[] = [
     header: "Aksi",
     cell: ({ row }) => {
       const gedung = row.original;
-      const [openDetail, setOpenDetail] = useState(false);
-      
-      return (
-        <div className="flex gap-2">
-          {/* Tombol Lihat Status */}
-          <StatusBulananDialog kode_gedung={gedung.kode_gedung} />
-          
-          {/* Tombol Lihat Detail */}
-          <Dialog open={openDetail} onOpenChange={setOpenDetail}>
-            <DialogTrigger asChild>
-              <Button variant="outline" size="sm" onClick={() => setOpenDetail(true)}>
-                <Eye className="mr-2 h-4 w-4" />
-                Lihat Detail
-              </Button>
-            </DialogTrigger>
-          <DialogContent className="max-w-[60vw] sm:max-w-[60vw] lg:max-w-3xl xl:max-w-4xl max-h-[90vh] overflow-y-auto p-8">
-            <DialogHeader>
-              <DialogTitle className="text-2xl">Detail Gedung</DialogTitle>
-              <DialogDescription className="text-base">
-                Informasi lengkap untuk {gedung.kode_gedung}
-              </DialogDescription>
-            </DialogHeader>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
-              {/* Kolom Kiri */}
-              <div className="space-y-5">
-                <div className="border-b pb-4">
-                  <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground mb-2.5">
-                    Kode Gedung
-                  </p>
-                  <p className="text-base font-medium">{gedung.kode_gedung}</p>
-                </div>
-                <div className="border-b pb-4">
-                  <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground mb-2.5">
-                    Nama Lokasi
-                  </p>
-                  <p className="text-base font-medium">{gedung.nama_lokasi}</p>
-                </div>
-                <div className="border-b pb-4">
-                  <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground mb-2.5">
-                    Provinsi
-                  </p>
-                  <p className="text-base font-medium">{gedung.provinsi}</p>
-                </div>
-                <div className="border-b pb-4">
-                  <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground mb-2.5">
-                    Kawasan
-                  </p>
-                  <p className="text-base font-medium">{gedung.kawasan}</p>
-                </div>
-                <div className="border-b pb-4">
-                  <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground mb-2.5">
-                    Area
-                  </p>
-                  <p className="text-base font-medium">{gedung.area}</p>
-                </div>
-                <div className="border-b pb-4">
-                  <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground mb-2.5">
-                    Kabupaten/Kota
-                  </p>
-                  <p className="text-base font-medium">{gedung.kab_kota}</p>
-                </div>
-                <div className="border-b pb-4">
-                  <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground mb-2.5">
-                    Witel
-                  </p>
-                  <p className="text-base font-medium">{gedung.witel}</p>
-                </div>
-              </div>
-              
-              {/* Kolom Kanan */}
-              <div className="space-y-5">
-                <div className="border-b pb-4">
-                  <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground mb-2.5">
-                    Peruntukan
-                  </p>
-                  <p className="text-base font-medium">{gedung.peruntukan}</p>
-                </div>
-                <div className="border-b pb-4">
-                  <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground mb-2.5">
-                    Kelas Berbayar
-                  </p>
-                  <p className="text-base font-medium">{gedung.kelas_berbayar}</p>
-                </div>
-                <div className="border-b pb-4">
-                  <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground mb-2.5">
-                    Luasan Berbayar
-                  </p>
-                  <p className="text-base font-medium">{gedung.luasan_berbayar} m²</p>
-                </div>
-                <div className="border-b pb-4">
-                  <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground mb-2.5">
-                    Keterangan
-                  </p>
-                  <Badge variant={gedung.keterangan === "AKTIF" ? "default" : "secondary"} className="text-sm px-3 py-1">
-                    {gedung.keterangan}
-                  </Badge>
-                </div>
-                <div className="border-b pb-4">
-                  <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground mb-2.5">
-                    Alamat Lokasi
-                  </p>
-                  <p className="text-base font-medium break-words">{gedung.alamat_lokasi}</p>
-                </div>
-                {gedung.histori && (
-                  <div className="border-b pb-4">
-                    <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground mb-2.5">
-                      Histori
-                    </p>
-                    <p className="text-base font-medium">{gedung.histori}</p>
-                  </div>
-                )}
-              </div>
-            </div>
-          </DialogContent>
-        </Dialog>
-        </div>
-      );
+      return <ActionCell gedung={gedung} />;
     },
   },
 ];

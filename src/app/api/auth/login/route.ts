@@ -80,16 +80,17 @@ export async function POST(request: NextRequest) {
     ]).catch((err) => {
       console.error("[API /api/auth/login] ❌ Query timeout or error:", err);
       return { data: null, error: err };
-    }) as any;
+    }) as { data: { USERNAME: string; PASSWORD: string; ROLE: string } | null; error: (Error & { code?: string }) | null };
 
     if (error) {
       console.error("[API /api/auth/login] ❌ Supabase error:", {
-        code: error.code,
+        code: (error as { code?: string }).code,
         message: error.message
       });
       
       // Jika timeout atau connection error
-      if (error.message === "Database timeout" || !error.code) {
+      const errorCode = (error as { code?: string }).code;
+      if (error.message === "Database timeout" || !errorCode) {
         return NextResponse.json(
           { 
             error: "Server sedang mengalami gangguan", 
@@ -100,7 +101,7 @@ export async function POST(request: NextRequest) {
       }
       
       // Jika data tidak ditemukan
-      if (error.code === "PGRST116") {
+      if (errorCode === "PGRST116") {
         console.log("[API /api/auth/login] ⚠️ Invalid credentials");
         return NextResponse.json(
           { error: "Username atau password salah" },

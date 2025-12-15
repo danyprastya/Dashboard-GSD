@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -7,7 +9,11 @@ export default function SuperAdminPage() {
   const [loading, setLoading] = useState<string | null>(null);
   const [selectedArea, setSelectedArea] = useState("BANDUNG");
   const [logs, setLogs] = useState<string[]>([]);
-  const [progress, setProgress] = useState({ current: 0, total: 0, percentage: 0 });
+  const [progress, setProgress] = useState({
+    current: 0,
+    total: 0,
+    percentage: 0,
+  });
   const [currentRunId, setCurrentRunId] = useState<string | null>(null);
   const [onlyUnapproved, setOnlyUnapproved] = useState(true); // Mode crawling periode 21-30
 
@@ -21,41 +27,63 @@ export default function SuperAdminPage() {
   useEffect(() => {
     if (!currentRunId) return;
 
-    const eventSource = new EventSource(`https://manajemengsd-crawler.onrender.com/crawler-logs/${currentRunId}`);
+    const eventSource = new EventSource(
+      `https://manajemengsd-crawler.onrender.com/crawler-logs/${currentRunId}`
+    );
 
     eventSource.onmessage = (event) => {
       try {
         const data = JSON.parse(event.data);
-        
-        if (data.type === 'log') {
+
+        if (data.type === "log") {
           setLogs((prev) => [...prev, data.message]);
-        } else if (data.type === 'batch_start') {
-          setLogs((prev) => [...prev, `🔒 Sending batch #${data.batchNumber} (${data.recordCount} records)...`]);
-        } else if (data.type === 'batch_complete') {
-          setLogs((prev) => [...prev, `✅ Batch #${data.batchNumber} fully sent: ${data.savedCount}/${data.expectedCount}`]);
+        } else if (data.type === "batch_start") {
+          setLogs((prev) => [
+            ...prev,
+            `🔒 Sending batch #${data.batchNumber} (${data.recordCount} records)...`,
+          ]);
+        } else if (data.type === "batch_complete") {
+          setLogs((prev) => [
+            ...prev,
+            `✅ Batch #${data.batchNumber} fully sent: ${data.savedCount}/${data.expectedCount}`,
+          ]);
           setProgress((prev) => ({
             current: prev.current + data.savedCount,
             total: prev.total + data.expectedCount,
-            percentage: Math.round(((prev.current + data.savedCount) / (prev.total + data.expectedCount)) * 100)
+            percentage: Math.round(
+              ((prev.current + data.savedCount) /
+                (prev.total + data.expectedCount)) *
+                100
+            ),
           }));
-        } else if (data.type === 'batch_partial') {
-          setLogs((prev) => [...prev, `⚠️ Batch #${data.batchNumber} partially sent: ${data.savedCount}/${data.expectedCount}`]);
-        } else if (data.type === 'batch_failed') {
-          setLogs((prev) => [...prev, `❌ Batch #${data.batchNumber} failed: ${data.error}`]);
-        } else if (data.type === 'complete') {
-          setLogs((prev) => [...prev, `\n🎉 Crawling completed!`, `📊 Total: ${data.totalSent} sent, ${data.totalFailed} failed`]);
+        } else if (data.type === "batch_partial") {
+          setLogs((prev) => [
+            ...prev,
+            `⚠️ Batch #${data.batchNumber} partially sent: ${data.savedCount}/${data.expectedCount}`,
+          ]);
+        } else if (data.type === "batch_failed") {
+          setLogs((prev) => [
+            ...prev,
+            `❌ Batch #${data.batchNumber} failed: ${data.error}`,
+          ]);
+        } else if (data.type === "complete") {
+          setLogs((prev) => [
+            ...prev,
+            `\n🎉 Crawling completed!`,
+            `📊 Total: ${data.totalSent} sent, ${data.totalFailed} failed`,
+          ]);
           setLoading(null);
-        } else if (data.type === 'error') {
+        } else if (data.type === "error") {
           setLogs((prev) => [...prev, `❌ Error: ${data.error}`]);
           setLoading(null);
         }
       } catch (err) {
-        console.error('Error parsing SSE data:', err);
+        console.error("Error parsing SSE data:", err);
       }
     };
 
     eventSource.onerror = () => {
-      console.log('SSE connection closed');
+      console.log("SSE connection closed");
       eventSource.close();
     };
 
@@ -76,32 +104,41 @@ export default function SuperAdminPage() {
     setLoading("period-1-20");
     setLogs([]);
     setProgress({ current: 0, total: 0, percentage: 0 });
-    
+
     try {
-      const res = await fetch("https://manajemengsd-crawler.onrender.com/run-crawler-period-1-20", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-          area: selectedArea
-        }),
-      });
-      
+      const res = await fetch(
+        "https://manajemengsd-crawler.onrender.com/run-crawler-period-1-20",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            area: selectedArea,
+          }),
+        }
+      );
+
       if (!res.ok) {
         throw new Error(`HTTP error! status: ${res.status}`);
       }
-      
+
       const data = await res.json();
-      
+
       if (data.success && data.runId) {
         setCurrentRunId(data.runId);
-        setLogs([`🚀 Crawler started for ${selectedArea}`, `🆔 Run ID: ${data.runId}`, `📡 Connecting to live logs...`]);
+        setLogs([
+          `🚀 Crawler started for ${selectedArea}`,
+          `🆔 Run ID: ${data.runId}`,
+          `📡 Connecting to live logs...`,
+        ]);
       } else {
-        alert(`❌ Error: ${data.error || 'Unknown error'}`);
+        alert(`❌ Error: ${data.error || "Unknown error"}`);
         setLoading(null);
       }
     } catch (err: any) {
       console.error("Gagal menjalankan crawler periode 1-20:", err);
-      alert(`❌ Gagal menjalankan crawler periode 1-20\n\nError: ${err.message}`);
+      alert(
+        `❌ Gagal menjalankan crawler periode 1-20\n\nError: ${err.message}`
+      );
       setLoading(null);
     }
   };
@@ -110,21 +147,24 @@ export default function SuperAdminPage() {
   const handleRunCrawlerPeriod21_30 = async () => {
     setLoading("period-21-30");
     try {
-      const res = await fetch("https://manajemengsd-crawler.onrender.com/run-crawler-period-21-30", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-          area: selectedArea,
-          onlyUnapproved: onlyUnapproved  // Kirim pilihan mode ke API
-        }),
-      });
-      
+      const res = await fetch(
+        "https://manajemengsd-crawler.onrender.com/run-crawler-period-21-30",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            area: selectedArea,
+            onlyUnapproved: onlyUnapproved, // Kirim pilihan mode ke API
+          }),
+        }
+      );
+
       if (!res.ok) {
         throw new Error(`HTTP error! status: ${res.status}`);
       }
-      
+
       const data = await res.json();
-      
+
       if (data.success) {
         alert(`✅ ${data.message}`);
       } else {
@@ -132,7 +172,9 @@ export default function SuperAdminPage() {
       }
     } catch (err: any) {
       console.error("Gagal menjalankan crawler periode 21-30:", err);
-      alert(`❌ Gagal menjalankan crawler periode 21-30\n\nError: ${err.message}`);
+      alert(
+        `❌ Gagal menjalankan crawler periode 21-30\n\nError: ${err.message}`
+      );
     } finally {
       setLoading(null);
     }
@@ -142,18 +184,21 @@ export default function SuperAdminPage() {
   const handleRunCrawlerBoth = async () => {
     setLoading("both");
     try {
-      const res = await fetch("https://manajemengsd-crawler.onrender.com/run-crawler-both", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ area: selectedArea }),
-      });
-      
+      const res = await fetch(
+        "https://manajemengsd-crawler.onrender.com/run-crawler-both",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ area: selectedArea }),
+        }
+      );
+
       if (!res.ok) {
         throw new Error(`HTTP error! status: ${res.status}`);
       }
-      
+
       const data = await res.json();
-      
+
       if (data.success) {
         alert(`✅ ${data.message}`);
       } else {
@@ -171,17 +216,20 @@ export default function SuperAdminPage() {
   const handleRunCrawlerAllAreas = async () => {
     setLoading("all-areas");
     try {
-      const res = await fetch("https://manajemengsd-crawler.onrender.com/run-crawler-all-areas-period-1-20", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-      });
-      
+      const res = await fetch(
+        "https://manajemengsd-crawler.onrender.com/run-crawler-all-areas-period-1-20",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+
       if (!res.ok) {
         throw new Error(`HTTP error! status: ${res.status}`);
       }
-      
+
       const data = await res.json();
-      
+
       if (data.success) {
         alert(`✅ ${data.message}`);
       } else {
@@ -209,8 +257,12 @@ export default function SuperAdminPage() {
               <span className="text-2xl">🛠️</span>
             </div>
             <div>
-              <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 md:text-4xl">SuperAdmin Panel</h1>
-              <p className="text-sm text-gray-600">Kelola crawler dengan antarmuka yang lebih nyaman.</p>
+              <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 md:text-4xl">
+                SuperAdmin Panel
+              </h1>
+              <p className="text-sm text-gray-600">
+                Kelola crawler dengan antarmuka yang lebih nyaman.
+              </p>
             </div>
           </div>
           <button
@@ -219,7 +271,9 @@ export default function SuperAdminPage() {
             className="group inline-flex items-center gap-2 rounded-lg border border-red-200 bg-white px-4 py-2 text-red-600 shadow-sm transition-all hover:border-red-300 hover:bg-red-50 disabled:opacity-50 disabled:cursor-not-allowed"
             aria-label="Logout"
           >
-            <span className="transition-transform group-hover:-translate-x-0.5">🚪</span>
+            <span className="transition-transform group-hover:-translate-x-0.5">
+              🚪
+            </span>
             <span className="font-medium">Logout</span>
           </button>
         </div>
@@ -230,7 +284,9 @@ export default function SuperAdminPage() {
           <div className="relative col-span-1 rounded-2xl border border-amber-100 bg-white/80 p-5 shadow-lg shadow-amber-100/50 backdrop-blur-sm">
             <div className="mb-3 flex items-center gap-2">
               <span className="text-lg">📍</span>
-              <h2 className="text-base font-semibold text-gray-800">Pilih Area</h2>
+              <h2 className="text-base font-semibold text-gray-800">
+                Pilih Area
+              </h2>
             </div>
             <select
               value={selectedArea}
@@ -253,9 +309,11 @@ export default function SuperAdminPage() {
             <div className="mt-5 border-t border-gray-100 pt-4">
               <div className="mb-3 flex items-center gap-2">
                 <span className="text-lg">⚙️</span>
-                <h2 className="text-base font-semibold text-gray-800">Mode Periode 21-30</h2>
+                <h2 className="text-base font-semibold text-gray-800">
+                  Mode Periode 21-30
+                </h2>
               </div>
-              
+
               <div className="space-y-3">
                 <label className="flex cursor-pointer items-start gap-3 rounded-lg border border-gray-200 bg-white p-3 transition hover:border-indigo-300 hover:bg-indigo-50/50">
                   <input
@@ -268,11 +326,16 @@ export default function SuperAdminPage() {
                   />
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
-                      <span className="font-medium text-gray-900">⚡ Optimized</span>
-                      <span className="rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">Recommended</span>
+                      <span className="font-medium text-gray-900">
+                        ⚡ Optimized
+                      </span>
+                      <span className="rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">
+                        Recommended
+                      </span>
                     </div>
                     <p className="mt-1 text-xs text-gray-600">
-                      Hanya crawl data yang belum APPROVED (skip yang sudah APPROVED). Lebih cepat & hemat resource.
+                      Hanya crawl data yang belum APPROVED (skip yang sudah
+                      APPROVED). Lebih cepat & hemat resource.
                     </p>
                   </div>
                 </label>
@@ -288,20 +351,34 @@ export default function SuperAdminPage() {
                   />
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
-                      <span className="font-medium text-gray-900">🔄 Full Crawl</span>
+                      <span className="font-medium text-gray-900">
+                        🔄 Full Crawl
+                      </span>
                     </div>
                     <p className="mt-1 text-xs text-gray-600">
-                      Crawl semua data (termasuk yang sudah APPROVED). Untuk verifikasi ulang atau troubleshooting.
+                      Crawl semua data (termasuk yang sudah APPROVED). Untuk
+                      verifikasi ulang atau troubleshooting.
                     </p>
                   </div>
                 </label>
               </div>
 
-              <div className={`mt-3 rounded-lg p-3 text-xs ${onlyUnapproved ? 'bg-green-50 text-green-700 ring-1 ring-green-100' : 'bg-amber-50 text-amber-700 ring-1 ring-amber-100'}`}>
+              <div
+                className={`mt-3 rounded-lg p-3 text-xs ${
+                  onlyUnapproved
+                    ? "bg-green-50 text-green-700 ring-1 ring-green-100"
+                    : "bg-amber-50 text-amber-700 ring-1 ring-amber-100"
+                }`}
+              >
                 {onlyUnapproved ? (
-                  <span>✨ Mode: <strong>Optimized</strong> - Skip data yang sudah APPROVED</span>
+                  <span>
+                    ✨ Mode: <strong>Optimized</strong> - Skip data yang sudah
+                    APPROVED
+                  </span>
                 ) : (
-                  <span>🔄 Mode: <strong>Full Crawl</strong> - Crawl semua data</span>
+                  <span>
+                    🔄 Mode: <strong>Full Crawl</strong> - Crawl semua data
+                  </span>
                 )}
               </div>
             </div>
@@ -312,34 +389,76 @@ export default function SuperAdminPage() {
                 <div className="flex items-start gap-3">
                   <span className="text-2xl">⚡</span>
                   <div className="flex-1">
-                    <h3 className="text-sm font-semibold text-green-900">Direct API Mode Active</h3>
+                    <h3 className="text-sm font-semibold text-green-900">
+                      Direct API Mode Active
+                    </h3>
                     <p className="mt-1 text-xs text-green-700">
-                      Data langsung tersimpan ke database saat crawling (real-time, no CSV intermediary)
+                      Data langsung tersimpan ke database saat crawling
+                      (real-time, no CSV intermediary)
                     </p>
                     <ul className="mt-2 space-y-1 text-xs text-green-600">
                       <li className="flex items-center gap-2">
-                        <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
+                        <svg
+                          className="h-3 w-3"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                            clipRule="evenodd"
+                          />
                         </svg>
-                        <span>Send per batch 50 records (low timeout risk)</span>
+                        <span>
+                          Send per batch 50 records (low timeout risk)
+                        </span>
                       </li>
                       <li className="flex items-center gap-2">
-                        <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
+                        <svg
+                          className="h-3 w-3"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                            clipRule="evenodd"
+                          />
                         </svg>
                         <span>Auto-retry 3x dengan exponential backoff</span>
                       </li>
                       <li className="flex items-center gap-2">
-                        <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
+                        <svg
+                          className="h-3 w-3"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                            clipRule="evenodd"
+                          />
                         </svg>
-                        <span>Manual edit protection (is_manual_edit flag)</span>
+                        <span>
+                          Manual edit protection (is_manual_edit flag)
+                        </span>
                       </li>
                       <li className="flex items-center gap-2">
-                        <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
+                        <svg
+                          className="h-3 w-3"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                            clipRule="evenodd"
+                          />
                         </svg>
-                        <span>Smart Upsert: Priority-based (APPROVED {'>'}SUBMITTED {'>'}OPEN)</span>
+                        <span>
+                          Smart Upsert: Priority-based (APPROVED {">"}SUBMITTED{" "}
+                          {">"}OPEN)
+                        </span>
                       </li>
                     </ul>
                   </div>
@@ -362,15 +481,21 @@ export default function SuperAdminPage() {
                   <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
                   <div>
                     <div className="text-sm opacity-90">Sedang berjalan</div>
-                    <div className="text-base font-semibold">Crawling Periode 1-20…</div>
+                    <div className="text-base font-semibold">
+                      Crawling Periode 1-20…
+                    </div>
                   </div>
                 </div>
               ) : (
                 <div className="flex items-center gap-3">
-                  <span className="text-xl transition-transform group-hover:scale-110">📅</span>
+                  <span className="text-xl transition-transform group-hover:scale-110">
+                    📅
+                  </span>
                   <div>
                     <div className="text-sm opacity-90">Periode 1-20</div>
-                    <div className="text-base font-semibold">Crawl ({selectedArea})</div>
+                    <div className="text-base font-semibold">
+                      Crawl ({selectedArea})
+                    </div>
                   </div>
                 </div>
               )}
@@ -388,15 +513,21 @@ export default function SuperAdminPage() {
                   <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
                   <div>
                     <div className="text-sm opacity-90">Sedang berjalan</div>
-                    <div className="text-base font-semibold">Crawling Periode 21-30…</div>
+                    <div className="text-base font-semibold">
+                      Crawling Periode 21-30…
+                    </div>
                   </div>
                 </div>
               ) : (
                 <div className="flex items-center gap-3">
-                  <span className="text-xl transition-transform group-hover:scale-110">📊</span>
+                  <span className="text-xl transition-transform group-hover:scale-110">
+                    📊
+                  </span>
                   <div>
                     <div className="text-sm opacity-90">Periode 21-30</div>
-                    <div className="text-base font-semibold">Crawl ({selectedArea})</div>
+                    <div className="text-base font-semibold">
+                      Crawl ({selectedArea})
+                    </div>
                   </div>
                 </div>
               )}
@@ -414,15 +545,21 @@ export default function SuperAdminPage() {
                   <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
                   <div>
                     <div className="text-sm opacity-90">Sedang berjalan</div>
-                    <div className="text-base font-semibold">Crawling Kedua Periode…</div>
+                    <div className="text-base font-semibold">
+                      Crawling Kedua Periode…
+                    </div>
                   </div>
                 </div>
               ) : (
                 <div className="flex items-center gap-3">
-                  <span className="text-xl transition-transform group-hover:scale-110">🚀</span>
+                  <span className="text-xl transition-transform group-hover:scale-110">
+                    🚀
+                  </span>
                   <div>
                     <div className="text-sm opacity-90">Kedua Periode</div>
-                    <div className="text-base font-semibold">Crawl ({selectedArea})</div>
+                    <div className="text-base font-semibold">
+                      Crawl ({selectedArea})
+                    </div>
                   </div>
                 </div>
               )}
@@ -440,15 +577,21 @@ export default function SuperAdminPage() {
                   <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
                   <div>
                     <div className="text-sm opacity-90">Sedang berjalan</div>
-                    <div className="text-base font-semibold">Crawling Semua Area…</div>
+                    <div className="text-base font-semibold">
+                      Crawling Semua Area…
+                    </div>
                   </div>
                 </div>
               ) : (
                 <div className="flex items-center gap-3">
-                  <span className="text-xl transition-transform group-hover:scale-110">🌍</span>
+                  <span className="text-xl transition-transform group-hover:scale-110">
+                    🌍
+                  </span>
                   <div>
                     <div className="text-sm opacity-90">Semua Area</div>
-                    <div className="text-base font-semibold">Crawl Periode 1-20</div>
+                    <div className="text-base font-semibold">
+                      Crawl Periode 1-20
+                    </div>
                   </div>
                 </div>
               )}
@@ -462,11 +605,25 @@ export default function SuperAdminPage() {
             <span>ℹ️</span> Informasi
           </h3>
           <ul className="list-disc space-y-1 pl-5 text-sm text-blue-800">
-            <li><strong>Periode 1-20</strong>: Crawl status OPEN, SUBMITTED, APPROVED</li>
-            <li><strong>Periode 21-30</strong>: Cek status untuk yang sudah APPROVED</li>
-            <li><strong>Kedua Periode</strong>: Jalankan keduanya secara berurutan (selalu kirim ke database)</li>
-            <li><strong>Semua Area</strong>: Crawl periode 1-20 untuk 4 area</li>
-            <li><strong>Send to Database</strong>: Aktifkan untuk otomatis simpan ke database (menggunakan Smart Upsert Strategy)</li>
+            <li>
+              <strong>Periode 1-20</strong>: Crawl status OPEN, SUBMITTED,
+              APPROVED
+            </li>
+            <li>
+              <strong>Periode 21-30</strong>: Cek status untuk yang sudah
+              APPROVED
+            </li>
+            <li>
+              <strong>Kedua Periode</strong>: Jalankan keduanya secara berurutan
+              (selalu kirim ke database)
+            </li>
+            <li>
+              <strong>Semua Area</strong>: Crawl periode 1-20 untuk 4 area
+            </li>
+            <li>
+              <strong>Send to Database</strong>: Aktifkan untuk otomatis simpan
+              ke database (menggunakan Smart Upsert Strategy)
+            </li>
           </ul>
         </div>
 
@@ -481,7 +638,8 @@ export default function SuperAdminPage() {
                     <span>📊</span> Progress
                   </h3>
                   <span className="text-sm font-medium text-indigo-600">
-                    {progress.current} / {progress.total} records ({progress.percentage}%)
+                    {progress.current} / {progress.total} records (
+                    {progress.percentage}%)
                   </span>
                 </div>
                 <div className="relative h-3 w-full overflow-hidden rounded-full bg-gray-200">
@@ -523,7 +681,10 @@ export default function SuperAdminPage() {
                   </div>
                 ) : (
                   logs.map((log, idx) => (
-                    <div key={idx} className="mb-1 whitespace-pre-wrap break-words">
+                    <div
+                      key={idx}
+                      className="mb-1 whitespace-pre-wrap break-words"
+                    >
                       {log}
                     </div>
                   ))

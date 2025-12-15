@@ -1,22 +1,21 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { Check, X, ChevronDown } from "lucide-react"
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import * as React from "react";
+import { Check, X, ChevronDown } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
-import { Badge } from "@/components/ui/badge"
+} from "@/components/ui/popover";
 
 interface MultiSelectProps {
-  options: string[]
-  selected: string[]
-  onChange: (selected: string[]) => void
-  placeholder?: string
-  maxDisplay?: number
+  options: string[];
+  selected: string[];
+  onChange: (selected: string[]) => void;
+  placeholder?: string;
+  maxDisplay?: number;
 }
 
 export function MultiSelect({
@@ -24,29 +23,31 @@ export function MultiSelect({
   selected,
   onChange,
   placeholder = "Pilih...",
-  maxDisplay = 2
+  maxDisplay = 2,
 }: MultiSelectProps) {
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = React.useState(false);
 
   const handleSelect = (option: string) => {
     const newSelected = selected.includes(option)
       ? selected.filter((item) => item !== option)
-      : [...selected, option]
-    onChange(newSelected)
-  }
+      : [...selected, option];
+    onChange(newSelected);
+  };
 
   const handleClear = (e: React.MouseEvent) => {
-    e.stopPropagation()
-    onChange([])
-  }
+    e.stopPropagation();
+    onChange([]);
+  };
 
   const displayText = () => {
-    if (selected.length === 0) return placeholder
+    if (selected.length === 0) return placeholder;
     if (selected.length <= maxDisplay) {
-      return selected.join(", ")
+      return selected.join(", ");
     }
-    return `${selected.slice(0, maxDisplay).join(", ")} +${selected.length - maxDisplay}`
-  }
+    return `${selected.slice(0, maxDisplay).join(", ")} +${
+      selected.length - maxDisplay
+    }`;
+  };
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -77,7 +78,7 @@ export function MultiSelect({
             </div>
           ) : (
             options.map((option) => {
-              const isSelected = selected.includes(option)
+              const isSelected = selected.includes(option);
               return (
                 <div
                   key={option}
@@ -99,11 +100,11 @@ export function MultiSelect({
                   </div>
                   <span>{option}</span>
                 </div>
-              )
+              );
             })
           )}
         </div>
       </PopoverContent>
     </Popover>
-  )
+  );
 }

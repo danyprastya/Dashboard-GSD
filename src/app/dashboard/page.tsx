@@ -1,14 +1,13 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import { useEffect, useState, useCallback } from "react"
+import { useEffect, useState, useCallback } from "react";
 import { AppSidebar } from "@/components/app-sidebar";
 import { ChartAreaInteractive } from "@/components/chart-area-interactive";
 import { DataTableOverall } from "@/components/data-table-overall";
-import { StatsCards } from "@/components/stats-cards";
 import { SiteHeader } from "@/components/site-header";
-import {
-  SidebarInset,
-  SidebarProvider,
-} from "@/components/ui/sidebar";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import {
   Select,
   SelectContent,
@@ -16,38 +15,39 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useRouter } from "next/navigation"
-import data from "./data-overall.json";
+import { useRouter } from "next/navigation";
 
 export default function Dashboard() {
   const [activePage, setActivePage] = useState("Dashboard");
   const [selectedYear, setSelectedYear] = useState<number>(2025);
   const [statsData, setStatsData] = useState<any>(null);
   const [statsLoading, setStatsLoading] = useState(true);
-  const router = useRouter()
+  const router = useRouter();
 
   // Available years (hardcoded for now, bisa diganti dengan API)
   const availableYears = [2024, 2025, 2026];
-    // useEffect(() => {
-    //   const loggedIn = document.cookie.includes("isLoggedIn=true")
-    //   if (!loggedIn) {
-    //     router.push("/")
-    //   }
-    // }, [])
+  // useEffect(() => {
+  //   const loggedIn = document.cookie.includes("isLoggedIn=true")
+  //   if (!loggedIn) {
+  //     router.push("/")
+  //   }
+  // }, [])
 
   useEffect(() => {
-    const roleMatch = document.cookie.match(/userRole=([^;]+)/)
-    const role = roleMatch ? roleMatch[1] : ''
-    if (role !== 'admin') router.push('/')
-  }, [])
+    const roleMatch = document.cookie.match(/userRole=([^;]+)/);
+    const role = roleMatch ? roleMatch[1] : "";
+    if (role !== "admin") router.push("/");
+  }, []);
 
   // Fetch stats data dari API
   const fetchStatsData = useCallback(async () => {
     try {
-      setStatsLoading(true)
-      const response = await fetch(`/api/overview/monthly?year=${selectedYear}`)
-      const result = await response.json()
-      
+      setStatsLoading(true);
+      const response = await fetch(
+        `/api/overview/monthly?year=${selectedYear}`
+      );
+      const result = await response.json();
+
       if (result.success && result.totals) {
         setStatsData({
           totalGedung: result.totals.checklist || 0,
@@ -55,32 +55,23 @@ export default function Dashboard() {
           approved21_30: result.totals.period_21_30?.approved || 0,
           pending: result.totals.period_1_20?.submitted || 0,
           open: result.totals.period_1_20?.open || 0,
-          error: (result.totals.period_21_30?.error || 0) + (result.totals.period_21_30?.not_found || 0)
-        })
+          error:
+            (result.totals.period_21_30?.error || 0) +
+            (result.totals.period_21_30?.not_found || 0),
+        });
       }
     } catch (err) {
-      console.error('Error fetching stats:', err)
+      console.error("Error fetching stats:", err);
     } finally {
-      setStatsLoading(false)
+      setStatsLoading(false);
     }
-  }, [selectedYear])
+  }, [selectedYear]);
 
   useEffect(() => {
-    fetchStatsData()
-  }, [fetchStatsData])
+    fetchStatsData();
+  }, [fetchStatsData]);
 
-  
   // Fungsi untuk logout
-  const handleLogout = () => {
-    // Hapus data session user
-    localStorage.removeItem("user")
-    document.cookie = "isLoggedIn=; path=/; max-age=0"
-    document.cookie = "userRole=; path=/; max-age=0"
-
-    // Arahkan ke halaman login
-    router.push("/")
-  }
-
 
   return (
     <SidebarProvider
@@ -92,14 +83,11 @@ export default function Dashboard() {
         } as React.CSSProperties
       }
     >
-      <AppSidebar
-        activePage={activePage} 
-        onNavItemClick={setActivePage}
-      />
-      
+      <AppSidebar activePage={activePage} onNavItemClick={setActivePage} />
+
       <SidebarInset>
         <SiteHeader activePage={activePage} />
-        
+
         <div className="flex flex-1 flex-col">
           <div className="@container/main flex flex-1 flex-col gap-2">
             <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
@@ -109,15 +97,15 @@ export default function Dashboard() {
                   <label className="text-sm font-medium text-gray-700">
                     Filter Tahun:
                   </label>
-                  <Select 
-                    value={selectedYear.toString()} 
+                  <Select
+                    value={selectedYear.toString()}
                     onValueChange={(value) => setSelectedYear(parseInt(value))}
                   >
                     <SelectTrigger className="w-[180px]">
                       <SelectValue placeholder="Pilih Tahun" />
                     </SelectTrigger>
                     <SelectContent>
-                      {availableYears.map(year => (
+                      {availableYears.map((year) => (
                         <SelectItem key={year} value={year.toString()}>
                           {year}
                         </SelectItem>
@@ -132,9 +120,7 @@ export default function Dashboard() {
 
               {/* Chart */}
               <div className="px-4 lg:px-6">
-                <ChartAreaInteractive 
-                  year={selectedYear}
-                />
+                <ChartAreaInteractive year={selectedYear} />
               </div>
 
               {/* Table */}
@@ -145,12 +131,6 @@ export default function Dashboard() {
           </div>
         </div>
       </SidebarInset>
-      {/* <button
-        onClick={handleLogout}
-        className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition"
-      >
-        Logout
-      </button> */}
     </SidebarProvider>
   );
 }

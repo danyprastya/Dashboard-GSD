@@ -119,7 +119,7 @@ export async function GET(request: NextRequest) {
 
     // Step 3: Combine gedung dengan status untuk return
     // Create mapping dari statusData
-    const statusMap = new Map<string, any>();
+    const statusMap = new Map<string, Record<string, unknown>>();
     statusData?.forEach(s => {
       const key = `${s.id_gedung}_${s.month}`;
       statusMap.set(key, s);

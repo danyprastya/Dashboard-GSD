@@ -25,12 +25,7 @@ function getSupabaseClient() {
   );
 }
 
-// Mapping bulan untuk sorting
-const MONTH_ORDER: { [key: string]: number } = {
-  'JAN': 1, 'FEB': 2, 'MAR': 3, 'APR': 4, 'MEI': 5, 'JUN': 6,
-  'JUL': 7, 'AGU': 8, 'SEP': 9, 'OKT': 10, 'NOV': 11, 'DES': 12
-};
-
+// List of all months for iteration
 const ALL_MONTHS = ['JAN', 'FEB', 'MAR', 'APR', 'MEI', 'JUN', 'JUL', 'AGU', 'SEP', 'OKT', 'NOV', 'DES'];
 
 interface KawasanBreakdown {
@@ -102,7 +97,14 @@ export async function GET(req: NextRequest) {
 
     // Fetch all data untuk tahun tersebut
     // ⚠️ IMPORTANT: Supabase default limit = 1000, kita override dengan .range()
-    let allData: any[] = [];
+    interface StatusRecord {
+      month: string;
+      year: number;
+      id_gedung: string;
+      period_1_20: string;
+      period_21_30: string;
+    }
+    let allData: StatusRecord[] = [];
     let fetchedCount = 0;
     const batchSize = 1000;
     let hasMore = true;
@@ -110,9 +112,9 @@ export async function GET(req: NextRequest) {
     console.log(`🔄 Fetching data in batches...`);
     
     while (hasMore) {
-      const { data: batchData, error, count } = await supabase
+      const { data: batchData, error } = await supabase
         .from('status_bulanan')
-        .select('month, year, id_gedung, period_1_20, period_21_30', { count: 'exact' })
+        .select('month, year, id_gedung, period_1_20, period_21_30')
         .eq('year', year)
         .range(fetchedCount, fetchedCount + batchSize - 1);
 
@@ -134,7 +136,7 @@ export async function GET(req: NextRequest) {
         console.log(`   ✓ Batch ${Math.ceil(fetchedCount / batchSize)}: Fetched ${batchData.length} records (total so far: ${fetchedCount})`);
         
         // Check if there's more data
-        hasMore = batchData.length === batchSize && (!count || fetchedCount < count);
+        hasMore = batchData.length === batchSize;
       } else {
         hasMore = false;
       }
@@ -152,7 +154,7 @@ export async function GET(req: NextRequest) {
       });
       
       // Count by month
-      const monthCounts = rawData.reduce((acc: any, row) => {
+      const monthCounts = rawData.reduce((acc: Record<string, number>, row) => {
         const month = row.month?.toUpperCase() || 'UNKNOWN';
         acc[month] = (acc[month] || 0) + 1;
         return acc;
@@ -162,8 +164,8 @@ export async function GET(req: NextRequest) {
 
     // Group data by month
     const monthlyMap = new Map<string, {
-      allRecords: any[];
-      byKawasan: Map<string, any[]>;
+      allRecords: StatusRecord[];
+      byKawasan: Map<string, StatusRecord[]>;
     }>();
 
     // Initialize all months dengan data kosong
@@ -201,7 +203,7 @@ export async function GET(req: NextRequest) {
       const records = monthData.allRecords;
       
       // Helper function untuk count status dari array records
-      const countStatuses = (records: any[]) => {
+      const countStatuses = (records: StatusRecord[]) => {
         const period1_20Count = { open: 0, submitted: 0, approved: 0 };
         const period21_30Count = { none: 0, error: 0, not_approved: 0, approved: 0, not_found: 0 };
         
@@ -291,14 +293,14 @@ export async function GET(req: NextRequest) {
       totals
     }, { status: 200 });
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('❌ Fatal error in API route:', error);
     
     return NextResponse.json(
       {
         success: false,
         error: 'Internal server error',
-        message: error.message
+        message: error instanceof Error ? error.message : 'Unknown error'
       },
       { status: 500 }
     );

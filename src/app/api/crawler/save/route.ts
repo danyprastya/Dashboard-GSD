@@ -151,7 +151,7 @@ export async function POST(req: NextRequest) {
     
     console.log(`🔄 Creating log entry with run_id: ${runId}`);
     
-    const { data: logData, error: logError } = await supabase
+    const { error: logError } = await supabase
       .from('log_crawler')
       .insert({
         run_id: runId,
@@ -186,7 +186,7 @@ export async function POST(req: NextRequest) {
     let jumlahGagal = 0;
     let jumlahDiupdate = 0;
     let jumlahBaru = 0;
-    const errors: any[] = [];
+    const errors: Array<{ id: string; error: string }> = [];
 
     console.log('🔄 Processing records with BATCH optimization...');
 
@@ -259,7 +259,7 @@ export async function POST(req: NextRequest) {
           }
           
           // UPDATE with Smart Logic
-          const updateData: any = {};
+          const updateData: Record<string, string | null> = {};
           let shouldUpdate = false;
 
           // Determine what to update based on updateMode
@@ -321,10 +321,11 @@ export async function POST(req: NextRequest) {
             jumlahBerhasil++; // Count as success
           }
         }
-      } catch (recordError: any) {
-        console.error(`   ❌ Error processing ${record.id_gedung}:`, recordError.message);
+      } catch (recordError: unknown) {
+        const errMsg = recordError instanceof Error ? recordError.message : 'Unknown error';
+        console.error(`   ❌ Error processing ${record.id_gedung}:`, errMsg);
         jumlahGagal++;
-        errors.push({ id: record.id_gedung, error: recordError.message });
+        errors.push({ id: record.id_gedung, error: errMsg });
       }
     }
 
@@ -378,14 +379,14 @@ export async function POST(req: NextRequest) {
     console.log('✅ Response sent successfully');
     return NextResponse.json(response, { status: 200 });
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('❌ Fatal error in API route:', error);
     
     return NextResponse.json(
       {
         success: false,
         error: 'Internal server error',
-        message: error.message
+        message: error instanceof Error ? error.message : 'Unknown error'
       },
       { status: 500 }
     );
@@ -393,6 +394,6 @@ export async function POST(req: NextRequest) {
 }
 
 // OPTIONS handler untuk CORS preflight
-export async function OPTIONS(req: NextRequest) {
+export async function OPTIONS() {
   return NextResponse.json({}, { status: 200 });
 }

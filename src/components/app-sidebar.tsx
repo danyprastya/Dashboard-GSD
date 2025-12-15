@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import * as React from "react";
@@ -24,11 +25,6 @@ import {
 import { NavMain } from "@/components/nav-main";
 
 const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
   navMain: [
     {
       title: "Dashboard",
@@ -38,25 +34,18 @@ const data = {
     {
       title: "Bandung",
       icon: IconBuilding,
-      subItems: [
-        { title: "Detail Gedung", url: "/dashboard/table/bandung" },
-        { title: "Gedung Rusak", url: "/bandung/rusak" },
-      ],
+      subItems: [{ title: "Detail Gedung", url: "/dashboard/table/bandung" }],
     },
     {
       title: "Kawasan Corpu",
       icon: IconBuildingCommunity,
-      subItems: [
-        { title: "Detail Gedung", url: "/dashboard/table/corpu" },
-        { title: "Gedung Rusak", url: "/corpu/rusak" },
-      ],
+      subItems: [{ title: "Detail Gedung", url: "/dashboard/table/corpu" }],
     },
     {
       title: "Priangan Barat",
       icon: IconBuildingStore,
       subItems: [
         { title: "Detail Gedung", url: "/dashboard/table/prianganbarat" },
-        { title: "Gedung Rusak", url: "/prianganbarat/rusak" },
       ],
     },
     {
@@ -64,7 +53,6 @@ const data = {
       icon: IconBuildingFactory,
       subItems: [
         { title: "Detail Gedung", url: "/dashboard/table/priangantimur" },
-        { title: "Gedung Rusak", url: "/priangantimur/rusak" },
       ],
     },
   ],
@@ -84,7 +72,7 @@ export function AppSidebar({
   // Handle navigation & auto-active
   const handleNavClick = (url: string) => {
     router.push(url);
-    onNavItemClick(url)
+    onNavItemClick(url);
   };
 
   return (
@@ -117,7 +105,7 @@ export function AppSidebar({
 
       {/* Footer */}
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser />
       </SidebarFooter>
     </Sidebar>
   );

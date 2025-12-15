@@ -28,12 +28,12 @@ export async function GET(request: NextRequest) {
 
     // Fetch all data with pagination
     const batchSize = 1000;
-    let allData: any[] = [];
+    let allData: Record<string, unknown>[] = [];
     let fetchedCount = 0;
     let hasMore = true;
 
     while (hasMore) {
-      const { data, error, count } = await query
+      const { data, error } = await query
         .range(fetchedCount, fetchedCount + batchSize - 1);
 
       if (error) {

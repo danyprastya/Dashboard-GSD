@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState, useEffect } from "react";
@@ -24,13 +23,13 @@ import {
 
 interface NavMainProps {
   items: {
-    title: string
-    icon: React.ElementType
-    url?: string
-    subItems?: { title: string; url: string }[]
-  }[]
-  currentPath: string
-  onNavClick: (url: string) => void
+    title: string;
+    icon: React.ElementType;
+    url?: string;
+    subItems?: { title: string; url: string }[];
+  }[];
+  currentPath: string;
+  onNavClick: (url: string) => void;
 }
 
 export function NavMain({ items }: NavMainProps) {
@@ -119,7 +118,10 @@ export function NavMain({ items }: NavMainProps) {
                                 "bg-primary/10 text-primary hover:bg-primary/20"
                             )}
                           >
-                            <button onClick={() => handleNavClick(sub.url)} suppressHydrationWarning>
+                            <button
+                              onClick={() => handleNavClick(sub.url)}
+                              suppressHydrationWarning
+                            >
                               <span>{sub.title}</span>
                             </button>
                           </SidebarMenuSubButton>

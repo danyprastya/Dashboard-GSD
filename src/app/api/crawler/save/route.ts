@@ -316,8 +316,9 @@ export async function POST(req: NextRequest) {
               jumlahDiupdate++;
             }
           } else {
-            // Skipped (protected by priority)
+            // ✅ Skipped (protected by priority) = SUCCESS (not failed)
             console.log(`   ⏭️ Skipped ${record.id_gedung} (no updates needed)`);
+            jumlahBerhasil++; // Count as success
           }
         }
       } catch (recordError: any) {

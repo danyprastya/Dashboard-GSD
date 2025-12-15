@@ -9,6 +9,7 @@ export default function SuperAdminPage() {
   const [logs, setLogs] = useState<string[]>([]);
   const [progress, setProgress] = useState({ current: 0, total: 0, percentage: 0 });
   const [currentRunId, setCurrentRunId] = useState<string | null>(null);
+  const [onlyUnapproved, setOnlyUnapproved] = useState(true); // Mode crawling periode 21-30
 
   useEffect(() => {
     const roleMatch = document.cookie.match(/userRole=([^;]+)/);
@@ -20,7 +21,7 @@ export default function SuperAdminPage() {
   useEffect(() => {
     if (!currentRunId) return;
 
-    const eventSource = new EventSource(`http://localhost:4000/crawler-logs/${currentRunId}`);
+    const eventSource = new EventSource(`https://manajemengsd-crawler.onrender.com/crawler-logs/${currentRunId}`);
 
     eventSource.onmessage = (event) => {
       try {
@@ -77,7 +78,7 @@ export default function SuperAdminPage() {
     setProgress({ current: 0, total: 0, percentage: 0 });
     
     try {
-      const res = await fetch("http://localhost:4000/run-crawler-period-1-20", {
+      const res = await fetch("https://manajemengsd-crawler.onrender.com/run-crawler-period-1-20", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ 
@@ -109,11 +110,12 @@ export default function SuperAdminPage() {
   const handleRunCrawlerPeriod21_30 = async () => {
     setLoading("period-21-30");
     try {
-      const res = await fetch("http://localhost:4000/run-crawler-period-21-30", {
+      const res = await fetch("https://manajemengsd-crawler.onrender.com/run-crawler-period-21-30", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ 
-          area: selectedArea
+          area: selectedArea,
+          onlyUnapproved: onlyUnapproved  // Kirim pilihan mode ke API
         }),
       });
       
@@ -140,7 +142,7 @@ export default function SuperAdminPage() {
   const handleRunCrawlerBoth = async () => {
     setLoading("both");
     try {
-      const res = await fetch("http://localhost:4000/run-crawler-both", {
+      const res = await fetch("https://manajemengsd-crawler.onrender.com/run-crawler-both", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ area: selectedArea }),
@@ -169,7 +171,7 @@ export default function SuperAdminPage() {
   const handleRunCrawlerAllAreas = async () => {
     setLoading("all-areas");
     try {
-      const res = await fetch("http://localhost:4000/run-crawler-all-areas-period-1-20", {
+      const res = await fetch("https://manajemengsd-crawler.onrender.com/run-crawler-all-areas-period-1-20", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
       });
@@ -245,6 +247,63 @@ export default function SuperAdminPage() {
 
             <div className="mt-4 rounded-lg bg-amber-50 p-3 text-sm text-amber-800 ring-1 ring-amber-100">
               Area aktif: <span className="font-semibold">{selectedArea}</span>
+            </div>
+
+            {/* Mode Crawling Periode 21-30 */}
+            <div className="mt-5 border-t border-gray-100 pt-4">
+              <div className="mb-3 flex items-center gap-2">
+                <span className="text-lg">⚙️</span>
+                <h2 className="text-base font-semibold text-gray-800">Mode Periode 21-30</h2>
+              </div>
+              
+              <div className="space-y-3">
+                <label className="flex cursor-pointer items-start gap-3 rounded-lg border border-gray-200 bg-white p-3 transition hover:border-indigo-300 hover:bg-indigo-50/50">
+                  <input
+                    type="radio"
+                    name="crawlMode"
+                    checked={onlyUnapproved === true}
+                    onChange={() => setOnlyUnapproved(true)}
+                    disabled={loading !== null}
+                    className="mt-0.5 h-4 w-4 text-indigo-600 focus:ring-2 focus:ring-indigo-500 disabled:opacity-50"
+                  />
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2">
+                      <span className="font-medium text-gray-900">⚡ Optimized</span>
+                      <span className="rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">Recommended</span>
+                    </div>
+                    <p className="mt-1 text-xs text-gray-600">
+                      Hanya crawl data yang belum APPROVED (skip yang sudah APPROVED). Lebih cepat & hemat resource.
+                    </p>
+                  </div>
+                </label>
+
+                <label className="flex cursor-pointer items-start gap-3 rounded-lg border border-gray-200 bg-white p-3 transition hover:border-amber-300 hover:bg-amber-50/50">
+                  <input
+                    type="radio"
+                    name="crawlMode"
+                    checked={onlyUnapproved === false}
+                    onChange={() => setOnlyUnapproved(false)}
+                    disabled={loading !== null}
+                    className="mt-0.5 h-4 w-4 text-amber-600 focus:ring-2 focus:ring-amber-500 disabled:opacity-50"
+                  />
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2">
+                      <span className="font-medium text-gray-900">🔄 Full Crawl</span>
+                    </div>
+                    <p className="mt-1 text-xs text-gray-600">
+                      Crawl semua data (termasuk yang sudah APPROVED). Untuk verifikasi ulang atau troubleshooting.
+                    </p>
+                  </div>
+                </label>
+              </div>
+
+              <div className={`mt-3 rounded-lg p-3 text-xs ${onlyUnapproved ? 'bg-green-50 text-green-700 ring-1 ring-green-100' : 'bg-amber-50 text-amber-700 ring-1 ring-amber-100'}`}>
+                {onlyUnapproved ? (
+                  <span>✨ Mode: <strong>Optimized</strong> - Skip data yang sudah APPROVED</span>
+                ) : (
+                  <span>🔄 Mode: <strong>Full Crawl</strong> - Crawl semua data</span>
+                )}
+              </div>
             </div>
 
             {/* Direct API Mode Info */}
